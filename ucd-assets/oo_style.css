@@ -1,0 +1,670 @@
+/*
+OnlineOpinion v5.9.0
+Released: 11/17/2014. Compiled 11/17/2014 01:01:01 PM -0600
+Branch: master 7cffc7b9a0b11594d56b71ca0cb042d9b0fc24f5
+Components: Full
+UMD: disabled
+The following code is Copyright 1998-2014 Opinionlab, Inc. All rights reserved. Unauthorized use is prohibited. This product and other products of OpinionLab, Inc. are protected by U.S. Patent No. 6606581, 6421724, 6785717 B1 and other patents pending. http://www.opinionlab.com
+*/
+hr {border-top: 1px solid #cccccc}
+#oo_company_logo {display: none !important;}
+#oo_company_logo img { max-height: 100%; max-width: 100%; height: auto; width: auto\9; display: none !important; /* ie8 */ }
+
+#oo_feedback_fl_spacer { display: block; height: 1px; position: absolute; top: 0; width: 100px; }
+
+.oo_feedback_float { width: 100px; height: 50px; overflow: hidden; font: 12px Tahoma, Arial, Helvetica, sans-serif; text-align: center; color: #252525; cursor: pointer; z-index: 999997; position: fixed; bottom: 5px; border: 1px solid #cccccc; border-radius: 9px; -moz-border-radius: 9px; -webkit-border-radius: 9px; right: 10px; -webkit-transition: -webkit-transform 0.3s ease; }
+.oo_feedback_float .screen_reader { position: absolute; clip: rect(1px 1px 1px 1px); /* for Internet Explorer */ clip: rect(1px, 1px, 1px, 1px); padding: 0; border: 0; height: 1px; width: 1px; overflow: hidden; }
+.oo_feedback_float .olUp { width: 100%; height: 100%; background: url(oo_float_icon.gif) center 10px no-repeat; text-align: center; padding: 31px 0 5px 0; position: relative; z-index: 2; filter: alpha(opacity=100); opacity: 1; transition: opacity .5s; -moz-transition: opacity .5s; -webkit-transition: opacity .5s; -o-transition: opacity .5s; }
+.oo_feedback_float .olUp img { margin-bottom: 5px; }
+.oo_feedback_float .oo_transparent { display: block; background: white; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 1; opacity: 0.8; filter: alpha(opacity=80); border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+.oo_feedback_float:hover .oo_transparent { opacity: 1.0; filter: alpha(opacity=100); }
+.oo_feedback_float:hover .olUp { display: block; opacity: 0; filter: alpha(opacity=0); }
+.oo_feedback_float .fbText { display: block; }
+.oo_feedback_float .olOver { display: block; height: 100%; width: 100%; position: absolute; top: 0; left: 0; min-height: 50px; z-index: 2; opacity: 0; filter: alpha(opacity=0); transition: opacity .5s; -moz-transition: opacity .5s; -webkit-transition: opacity .5s; -o-transition: opacity .5s; }
+.oo_feedback_float .olOver span { display: block; padding: 10px 5px; }
+.oo_feedback_float:hover .olOver { opacity: 1.0; filter: alpha(opacity=100); top: 0; }
+#oo_inline > div {
+	background: #FF851E;
+	background: -webkit-linear-gradient(left, #FF851E, #FF317D);
+	background: -o-linear-gradient(right, #FF851E, #FF317D);
+	background: -moz-linear-gradient(right, #FF851E, #FF317D);
+    	background: linear-gradient(to right, #FF851E, #FF317D);
+}
+
+.oo_cc_wrapper { left: 0; padding: 0; position: fixed; text-align: center; top: 25px; width: 100%; z-index: 999999; }
+.oo_cc_wrapper .screen_reader { position: absolute; clip: rect(1px 1px 1px 1px); /* for Internet Explorer */ clip: rect(1px, 1px, 1px, 1px); padding: 0; border: 0; height: 1px; width: 1px; overflow: hidden; }
+.oo_cc_wrapper span { width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 1; }
+.oo_cc_wrapper .iwrapper { background-color: white; margin: 0 auto; position: relative; width: 535px; z-index: 2; box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); -moz-box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); -webkit-box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); }
+.oo_cc_wrapper iframe { position: relative; border: none; width: 100%; z-index: 4; }
+.oo_cc_wrapper .oo_cc_close { position: absolute; display: block; right: 20px; top: 5px; font: 1em/1.5em 'HelveticaNeue-Medium', Helvetica, Arial, sans-serif; text-align: center; z-index: 5; color: black; text-decoration: none; cursor: pointer; }
+
+#oo_bar { padding: 10px 35px; cursor: pointer; color: white; border-top: 1px solid white; background-color: black; bottom: 0; display: block; font: 16px 'HelveticaNeue-Medium', Helvetica, Arial, sans-serif; left: 0; text-decoration: none; line-height: 16px; position: fixed; text-align: left; width: 100%; z-index: 999997; box-shadow: rgba(0, 0, 0, 0.5) 0px -1px 2px; -moz-box-shadow: rgba(0, 0, 0, 0.5) 0px -1px 2px; -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px -1px 2px; }
+#oo_bar span.icon { background-image: url(oo_bar_icon.gif); background-repeat: no-repeat; position: absolute; left: 8px; top: 9px; width: 19px; height: 17px; }
+#oo_bar .screen_reader { position: absolute; clip: rect(1px 1px 1px 1px); /* for Internet Explorer */ clip: rect(1px, 1px, 1px, 1px); padding: 0; border: 0; height: 1px; width: 1px; overflow: hidden; }
+#oo_bar:focus { outline: 3px solid #51ace9; }
+
+.oo_bar { padding-bottom: 37px; }
+
+#oo_tab { background-image: url(oo_feedback_bg.png); box-shadow: rgba(0, 0, 0, 0.7) 0 0 3px; -moz-box-shadow: rgba(0, 0, 0, 0.7) 0 0 3px; -webkit-box-shadow: rgba(0, 0, 0, 0.7) 0 0 3px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border: none; display: block; position: fixed; top: 45%; height: 117px; width: 38px; z-index: 999995; cursor: pointer; background-repeat: no-repeat;}
+#oo_tab span { background: url("oo_tab_icon_white.gif") no-repeat scroll 0 0 transparent; bottom: 9px; _bottom: 1px; display: block; height: 19px; left: 5px; position: absolute; width: 17px; }
+#oo_tab div { _background-image: url(oo_tabie6.png); background-repeat: no-repeat; position: absolute; display: block; height: 100%; left: 0; top: 0; width: 100%; }
+#oo_tab.wcag a { background: url(oo_tab_icon.gif) no-repeat; background-repeat: no-repeat; background-position: center bottom; border: none; outline: none; position: absolute; display: block; bottom: 15px; left: -6px; top: 0; width: 100%; }
+#oo_tab.wcag img { border: none; outline: none; display: block; position: absolute; left: 0; top: -10px; }
+#oo_tab .screen_reader { color: transparent; display: block; position: relative; height: 0; width: 0; line-height: 0; overflow: hidden; }
+.oo_tab_text { color: #FFFFFF; background-color: #003b68; transform: rotate(270deg); position: relative; right: 6px; top: 46px; }
+
+.oo_tab_left { left: -13px; border-radius: 0px 9px 9px 0px; -moz-border-radius: 0px 9px 9px 0px; -webkit-border-radius: 0px 9px 9px 0px; transition: left .5s; -moz-transition: left .5s; -webkit-transition: left .5s; -o-transition: left .5s; background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#eeeeee), to(white)); background-image: -webkit-linear-gradient(left, #eeeeee, white); background-image: -moz-linear-gradient(left, #eeeeee, white); background-image: -ms-linear-gradient(left, #eeeeee, white); background-image: -o-linear-gradient(left, #eeeeee, white); background-image: linear-gradient(left, #eeeeee, white); }
+.oo_tab_left span { right: 6px; }
+.oo_tab_left div { background-position: 6px -10px; }
+.oo_tab_left:hover { left: -5px; }
+
+.oo_tab_right { right: -13px; border-radius: 9px 0px 0px 9px; -moz-border-radius: 9px 0px 0px 9px; -webkit-border-radius: 9px 0px 0px 9px; transition: right .5s; -moz-transition: right .5s; -webkit-transition: right .5s; -o-transition: right .5s; background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(white), to(#eeeeee)); background-image: -webkit-linear-gradient(left, white, #eeeeee); background-image: -moz-linear-gradient(left, white, #eeeeee); background-image: -ms-linear-gradient(left, white, #eeeeee); background-image: -o-linear-gradient(left, white, #eeeeee); background-image: linear-gradient(left, white, #eeeeee); }
+.oo_tab_right span { left: 7px; }
+.oo_tab_right div { background-position: -6px -10px; }
+.oo_tab_right:hover { right: -5px; }
+
+.oo_tab_ie_right { border-right: none !important; right: 1px; width: 25px !important; }
+.oo_tab_ie_right:hover { right: 6px; width: 30px !important; }
+
+#oo_tab.oo_tab_ie67_right.wcag { overflow: hidden !important; right: 0px !important; width: 26px !important; }
+#oo_tab.oo_tab_ie67_right.wcag:hover { right: 0px !important; width: 31px !important; }
+#oo_tab.oo_tab_ie67_right.wcag a { background: none; z-index: 1; }
+#oo_tab.oo_tab_ie67_right.wcag .screen_reader { bottom: 15px; display: block; background: url(oo_tab_icon.gif) no-repeat; height: 9px; width: 9px; position: absolute; left: 7px; top: auto; z-index: 9999; }
+
+#oo_tab_1 { background-color: #f13f3c; border: 2px solid #ffffff; display: block; position: fixed; top: 40%; padding: 15px 0px 15px 0px; _height: 30px; _padding: 0px; _top: 45%; width: 105px; z-index: 999995; cursor: pointer; box-shadow: rgba(0, 0, 0, 0.7) 0 0 3px; -moz-box-shadow: rgba(0, 0, 0, 0.7) 0 0 3px; -webkit-box-shadow: rgba(0, 0, 0, 0.7) 0 0 3px; }
+#oo_tab_1 span { bottom: 6px; display: block; background-image: url(oo_tab_icon_1.gif); height: 17px; position: absolute; width: 19px; }
+#oo_tab_1 div { position: absolute; display: block; height: 100%; left: 0; top: 0; width: 100%; }
+#oo_tab_1 .screen_reader { color: transparent; display: block; position: relative; height: 0; width: 0; line-height: 0; overflow: hidden; }
+
+.oo_tab_right_1 { right: -75px; border-radius: 5px 0px 0px 5px; -moz-border-radius: 5px 0px 0px 5px; -webkit-border-radius: 5px 0px 0px 5px; transition: right 1.0s; -moz-transition: right 1.0s; -webkit-transition: right 1.0s; -o-transition: right 1.0s; background-image: -webkit-linear-gradient(top, #ee5853, #c73b32); background-image: -moz-linear-gradient(top, #ee5853, #c73b32); background-image: -ms-linear-gradient(top, #ee5853, #c73b32); background-image: -o-linear-gradient(top, #ee5853, #c73b32); background-image: linear-gradient(top, #ee5853, #c73b32); }
+.oo_tab_right_1 span { left: 7px; }
+.oo_tab_right_1:hover { right: -5px; }
+
+.oo_tab_left_1 { left: -78px; border-radius: 0px 5px 5px 0px; -moz-border-radius: 0px 5px 5px 0px; -webkit-border-radius: 0px 5px 5px 0px; transition: left 0.5s; -moz-transition: left 1.0s; -webkit-transition: left 1.0s; -o-transition: left 1.0s; background-image: -webkit-linear-gradient(top, #ee5853, #c73b32); background-image: -moz-linear-gradient(top, #ee5853, #c73b32); background-image: -ms-linear-gradient(top, #ee5853, #c73b32); background-image: -o-linear-gradient(top, #ee5853, #c73b32); background-image: linear-gradient(top, #ee5853, #c73b32); }
+.oo_tab_left_1 span { right: 6px; }
+.oo_tab_left_1 div { background-position: 6px -10px; }
+.oo_tab_left_1:hover { left: -5px; }
+
+a#oo_tab_text_1 { background-image: none; font-family: Tahoma, Helvetica, Arial, sans-serif; line-height: 16px; font-size: 16px; }
+a#oo_tab_text_1:hover { text-decoration: none; }
+
+a#oo_tab_text_1.right { color: white; position: absolute; top: 7px; left: 33px; }
+
+a#oo_tab_text_1.left { color: white; position: absolute; top: 7px; left: 10px; }
+
+#oo_container { position: fixed; height: 100%; width: 100%; top: 0; left: 0; z-index: 999999; }
+#oo_invite_message {padding-top: 280px !important; margin-bottom: 20px; font-size: 1.1em !important;}
+#oo_invitation_prompt { background: #fff; box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); -moz-box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); -webkit-box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); margin: 5% auto; text-align: left; position: relative; width: 500px; z-index: 999999; }
+#oo_invitation_prompt #oo_company_logo { width: 100%; height: 120px; background: black; }
+#oo_invitation_prompt #oo_company_logo img { height: 100%; }
+#oo_invitation_prompt #oo_invite_content { background: url(ucci_bg_slogan.png); background-repeat: no-repeat; height: 440px !important; width: 80%; padding: 40px 10% 20px 10%; box-shadow: inset 0px 0px 0px 1px #ccc; -webkit-box-shadow: inset 0px 0px 0px 1px #ccc; -moz-box-shadow: inset 0px 0px 0px 1px #ccc;}
+#oo_invitation_prompt #oo_invite_content p { font-size: 1.0em !important; color: #252525; margin: 0; padding-bottom: 0px !important;}
+#oo_invitation_prompt #oo_invite_content p.prompt_button a { text-align: center; color: white; text-decoration: none; font-size: 1.5em; line-height: 1.2em; padding: 12px 0 13px 0; display: block; height: 25px; }
+#oo_invitation_prompt #oo_invite_content a { cursor: pointer; }
+#oo_invitation_prompt #oo_invite_content a:focus { outline: 3px solid #51ace9; }
+#oo_invitation_prompt #oo_invite_content a#oo_launch_prompt {  }
+#oo_invitation_prompt #oo_invite_content a#oo_no_thanks {  }
+#oo_invitation_prompt #oo_invite_content #ol_brand_logo { text-align: center; line-height: 1.5em; margin: 0 0 0 0; padding: 13px 0 0 0; width: 50%; float: left; }
+#oo_invitation_prompt #oo_invite_content #ol_brand_logo img { height: 25px; width: 146px; border: 0px; }
+#oo_invitation_prompt #oo_invite_content #ol_brand_logo a { display: block; height: 25px; }
+#oo_invitation_prompt #oo_close_prompt { position: absolute; display: block; right: 5px; top: 5px; line-height: 1em; font-size: 1em; color: #252525; text-decoration: none; height: 17px; width: 20px; padding-top: 3px;}
+#oo_invitation_prompt #oo_close_prompt:focus { outline: none; }
+#oo_invitation_prompt #oo_close_prompt:focus span { outline: 3px solid #51ace9; }
+#oo_invitation_prompt .screen_reader { position: absolute; clip: rect(1px 1px 1px 1px); /* for Internet Explorer */ clip: rect(1px, 1px, 1px, 1px); padding: 0; border: 0; height: 1px; width: 1px; overflow: hidden; }
+
+#oo_waypoint_container { position: fixed; height: 100%; width: 100%; top: 0; left: 0; z-index: 999999; }
+
+#oo_waypoint_prompt { background: #fff; box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); -moz-box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); -webkit-box-shadow: 0px 1px 3px 0px rgba(102, 102, 102, 0.3); margin: 5% auto; text-align: left; position: relative; width: 500px; z-index: 999999; }
+#oo_waypoint_prompt #oo_company_logo { width: 100%; height: 120px; background: black; display: none !important;}
+#oo_waypoint_prompt #oo_company_logo img { height: 100%;display: none !important; }
+#oo_waypoint_prompt #oo_waypoint_content { width: 80%; padding: 30px 10% 20px 10%; box-shadow: inset 0px 0px 0px 1px #ccc; -webkit-box-shadow: inset 0px 0px 0px 1px #ccc; -moz-box-shadow: inset 0px 0px 0px 1px #ccc; }
+#oo_waypoint_prompt #oo_waypoint_content a { cursor: pointer; }
+#oo_waypoint_prompt #oo_waypoint_content a:focus { outline: 3px solid #51ace9; }
+#oo_waypoint_prompt #oo_waypoint_content p { color: black; font: 1em/1.5em 'HelveticaNeue-Medium', Helvetica, Arial, sans-serif; margin: 0; padding: 0 0 20px 0; text-align: center; }
+#oo_waypoint_prompt #oo_waypoint_content p#oo_waypoint_message { font-size: 1.2em; }
+#oo_waypoint_prompt #oo_waypoint_content a.waypoint_icon { cursor: pointer; text-decoration: none; font-size: 1.5em; line-height: 1.2em; padding: 12px 0 13px 0; display: block; height: 25px; color: white; margin-bottom: 20px; background-color: #cb352d; text-align: center; }
+#oo_waypoint_prompt #oo_waypoint_content a.waypoint_icon.last { margin-bottom: 0; }
+#oo_waypoint_prompt #oo_waypoint_content #ol_brand_logo { border-top: 1px solid #ccc; line-height: 1.5em; margin: 10px 0 0 0; padding: 20px 0 0 0; }
+#oo_waypoint_prompt #oo_waypoint_content #ol_brand_logo img { height: 25px; width: 146px; border: 0px; }
+#oo_waypoint_prompt #oo_waypoint_content #ol_brand_logo a { display: block; height: 25px; }
+#oo_waypoint_prompt #oo_close_prompt_waypoint { position: absolute; display: block; right: 5px; top: 5px; line-height: 1em; font-size: 1em; color: #252525; text-decoration: none; height: 17px; width: 20px; padding-top: 3px; }
+#oo_waypoint_prompt #oo_close_prompt_waypoint:focus { outline: none; }
+#oo_waypoint_prompt #oo_close_prompt_waypoint:focus span { outline: 3px solid #51ace9; }
+#oo_waypoint_prompt .screen_reader { position: absolute; clip: rect(1px 1px 1px 1px); /* for Internet Explorer */ clip: rect(1px, 1px, 1px, 1px); padding: 0; border: 0; height: 1px; width: 1px; overflow: hidden; }
+
+html body #oo_invitation_prompt { background-color: #ffffff; font-size: 1.25em;line-height: 1.5em;border-radius: 0px; font-family: 'Arial,Verdana,Helvetica'; box-shadow: rgba(0, 0, 0, 0.6) 0 0 15px; -webkit-box-shadow: rgba(0, 0, 0, 0.6) 0 0 15px; -moz-box-shadow: rgba(0, 0, 0, 0.6) 0 0 15px; -webkit-box-shadow: rgba(0, 0, 0, 0.6) 0 0 8px; -moz-box-shadow: rgba(0, 0, 0, 0.6) 0 0 8px; color: #252525; font: 14px/20px Arial,Verdana,Helvetica; line-height: 20px; margin: 50px auto; text-align: left; position: relative; width: 535px; height: 500px; z-index: 999999; }
+html body #oo_invitation_prompt h1 { display: inline-block; *display: inline; zoom: 1; font-size: 19px; font-weight: bold; margin-bottom: .6em; margin-top: 12%; margin-right: 15%; float: right; *float: none; position: absolute; left: 25px; }
+html body #oo_invitation_prompt p { margin-bottom: 1.5em; }
+html body #oo_invitation_prompt #prompt_buttons { width: 81%; *width: 700px; margin-top: 1%; margin-left: auto; margin-right: auto; padding-bottom: 0px; position: relative; z-index: 5; display: inline; padding-left: 38px;}
+#survery_quest { 
+    padding-top: 210px !important;
+    padding-bottom: 0px !important;
+}
+#value_op {
+    font-size: 60px !important;
+    font-weight: 700 !important;
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 6px #000000;
+    margin-left: 40px !important;
+    margin-top: 120px !important;
+    line-height: 60px;
+}
+html body #oo_invitation_prompt #oo_launch_prompt { 
+    color:white;
+    -moz-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    box-shadow:inset 0px 0px 0px 0px #ffffff;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4AB1E4), color-stop(1, #386686) );
+    background:-moz-linear-gradient( center top, #4AB1E4 5%, #386686 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4AB1E4', endColorstr='#386686');
+    background-color:#78A8C8;
+    -webkit-border-top-left-radius:6px;
+    -moz-border-radius-topleft:6px;
+    border-top-left-radius:6px;
+    -webkit-border-top-right-radius:6px;
+    -moz-border-radius-topright:6px;
+    border-top-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
+    -moz-border-radius-bottomright:6px;
+    border-bottom-right-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+    -moz-border-radius-bottomleft:6px;
+    border-bottom-left-radius:6px;
+    text-indent:0;
+    display:inline-block;
+    color:white;
+    font-size:15px;
+    font-style:normal;
+    width: 200px;
+    line-height: 30px;
+    text-decoration:none;
+    text-align:center;
+    cursor: pointer; cursor: hand;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+html body #oo_invitation_prompt #oo_no_thanks { 
+    color:white;
+    -moz-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    box-shadow:inset 0px 0px 0px 0px #ffffff;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4AB1E4), color-stop(1, #386686) );
+    background:-moz-linear-gradient( center top, #4AB1E4 5%, #386686 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4AB1E4', endColorstr='#386686');
+    background-color:#78A8C8;
+    -webkit-border-top-left-radius:6px;
+    -moz-border-radius-topleft:6px;
+    border-top-left-radius:6px;
+    -webkit-border-top-right-radius:6px;
+    -moz-border-radius-topright:6px;
+    border-top-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
+    -moz-border-radius-bottomright:6px;
+    border-bottom-right-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+    -moz-border-radius-bottomleft:6px;
+    border-bottom-left-radius:6px;
+    text-indent:0;
+    display:inline-block;
+    color:white;
+    font-size:15px;
+    font-style:normal;
+    width: 200px;
+    line-height: 30px;
+    text-decoration:none;
+    text-align:center;
+    cursor: pointer; cursor: hand; 
+    margin-top: 20px;
+    margin-bottom: 5px; 
+}
+html body #oo_invitation_prompt #oo_ol_brand { background-color: white; display: block; height: 16%; position: absolute; bottom: 0; width: 100%; }
+
+html body #oo_waypoint_prompt #oo_ol_brand { background-color: white; display: block; height: 16%; position: absolute; bottom: 0; width: 100%; }
+
+
+#oo_invitation_prompt_sub_header { padding-left: 5%; padding-right: 5%; }
+
+#oo_invitation_prompt #oo_company_logo { width: 20%; height: 18%; margin-left: 5%; margin-top: 2%; padding-bottom: 1%; display: inline-block; *display: inline; zoom: 1; }
+
+#oo_invitation_prompt #oo_ol_brand { border-top: 1px solid #cccccc; }
+
+#oo_invitation_prompt #oo_ol_brand_logo { margin-top: 3%; margin-left: 4%; margin-right: 4%; display: inline-block; background: no-repeat url(oo_opinionlab_logo.png); width: 26%; height: 35px; }
+
+#oo_invitation_prompt a { background: #ffffff; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; transition: background .5s; -moz-transition: background .5s; -webkit-transition: background .5s; -o-transition: background .5s; }*/
+#oo_invitation_prompt a:hover { background: #ffffff; }
+
+#oo_waypoint_prompt #oo_ol_brand { border-top: 1px solid #cccccc; }
+
+#oo_waypoint_prompt #oo_ol_brand_logo { margin-top: 15px; margin-left: 4%; margin-right: 4%; display: inline-block; background: no-repeat url(oo_opinionlab_logo_small.png); height: 25px; width: 146px; }
+
+
+a#oo_launch_prompt { background: #4D9900; }
+a#oo_launch_prompt:hover { background: #4D9900; }
+
+#oo_invitation_prompt .oo_ol_brand_footer_text {font-size: 10px; color: #252525; text-decoration: none;}
+#oo_invitation_prompt .copyright-text  {font-size: 10px !important; color: #252525 !important; }
+#oo_invitation_prompt #oo_ol_brand_footer_text:hover { color: #252525;}
+
+
+
+#oo_close_prompt { position: absolute; display: block; background: white; height: 20px; width: 20px; border: 1px solid #cccccc; cursor: pointer; right: 5px; top: 5px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; transition: background .5s; -moz-transition: background .5s; -webkit-transition: background .5s; -o-transition: background .5s; font: 14px/20px Tahoma, Arial, Helvetica, sans-serif; text-align: center; }
+#oo_close_prompt:hover { background: #eeeeee; }
+#oo_close_prompt .screen_reader { color: transparent; display: block; position: relative; height: 0; width: 0; line-height: 0; overflow: hidden; }
+#oo_close_prompt_waypoint { position: absolute; display: block; background: white; height: 20px; width: 20px; border: 1px solid #cccccc; cursor: pointer; right: 5px; top: 5px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; transition: background .5s; -moz-transition: background .5s; -webkit-transition: background .5s; -o-transition: background .5s; font: 14px/20px Tahoma, Arial, Helvetica, sans-serif; text-align: center; }
+#oo_close_prompt_waypoint:hover { background: #eeeeee; }
+#oo_close_prompt_waypoint .screen_reader { color: transparent; display: block; position: relative; height: 0; width: 0; line-height: 0; overflow: hidden; }
+
+#oo_feedback_show p {text-shadow: 0px 0px 0 #303030; font-weight: normal;}
+
+#oo_waypoint_help p {text-shadow: 0px 0px 0 #303030; font-weight: normal;}
+
+#oo_waypoint_prompt #oo_ol_brand_footer_text { padding-top: 5px; width: 50%; position: absolute; display: inline-block; font-size: 10px; }
+
+#oo_waypoint_prompt #oo_ol_brand_footer_text a { color: #333333; background: #FFFFFF; }
+#oo_waypoint_prompt #oo_ol_brand_footer_text a:hover { color: #333333; background: #FFFFFF; }
+
+#oo_waypoint_prompt #oo_ol_brand_footer_text p { font-size: 10px; margin: 0; padding: 0; }
+
+
+
+.oo_waypoint_btn {
+    color:white;
+    -moz-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    box-shadow:inset 0px 0px 0px 0px #ffffff;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4AB1E4), color-stop(1, #386686) );
+    background:-moz-linear-gradient( center top, #4AB1E4 5%, #386686 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4AB1E4', endColorstr='#386686');
+    background-color:#78A8C8;
+    -webkit-border-top-left-radius:6px;
+    -moz-border-radius-topleft:6px;
+    border-top-left-radius:6px;
+    -webkit-border-top-right-radius:6px;
+    -moz-border-radius-topright:6px;
+    border-top-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
+    -moz-border-radius-bottomright:6px;
+    border-bottom-right-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+    -moz-border-radius-bottomleft:6px;
+    border-bottom-left-radius:6px;
+    text-indent:0;
+    display:inline-block;
+    color:white;
+    font-size:15px;
+    font-style:normal;
+    height:50px;
+    line-height:50px;
+    width:200px;
+    text-decoration:none;
+    text-align:center;
+    cursor: pointer; cursor: hand;
+    margin-top:225px;
+}
+.oo_show:hover {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+    background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+    background-color:#dfdfdf;
+}.oo_show:active {
+    position:relative;
+    top:1px;
+}
+
+#oo_waypoint_content_1 {
+    padding-top: 0px;
+    display: inline-block;
+    width: 38%;
+    margin-left: 30px;
+    margin-right: 30px;
+    height: 250px;
+}
+#oo_waypoint_content_1 p {text-align: center; font-size: 12px;}
+#oo_waypoint_content_1 div {
+    display: inline-block;
+    font-size: 1.10em !important;
+    font-weight: bold;
+    margin-right: 10px;
+    max-width: 100%;
+    text-align: center;
+    text-shadow: 1px 1px 0 #303030;
+    
+}
+
+#oo_waypoint_content_2 {
+    display: inline-block;
+    width: 41%;
+    margin-left:40px;
+    margin-right:10px;
+    height: 250px;
+    
+}
+#oo_waypoint_content_2 p {text-align: center; font-size: 12px;}
+#oo_waypoint_content_2 div {
+    display: inline-block;
+    font-size: 1.10em !important;
+    font-weight: bold;
+    margin-right: 10px;
+    max-width: 100%;
+    text-align: center;
+    text-shadow: 1px 1px 0 #303030;
+}
+#oo_waypoint_show {
+    margin-right:30px;
+}
+
+#oo_waypoint_header {
+    line-height: 2em;
+    font-size: 2em;
+    padding-top: 59px;
+    color: rgb(0, 82, 147);
+    text-align: center;
+}
+
+
+
+html body #oo_waypoint_prompt { font-size: 1.25em;line-height: 1.5em;border-radius: 0px;background: url(ucci_bg_slogan.png);font-family: 'Arial,Verdana,Helvetica'; box-shadow: rgba(0, 0, 0, 0.6) 0 0 15px; -webkit-box-shadow: rgba(0, 0, 0, 0.6) 0 0 15px; -moz-box-shadow: rgba(0, 0, 0, 0.6) 0 0 15px; -webkit-box-shadow: rgba(0, 0, 0, 0.6) 0 0 8px; -moz-box-shadow: rgba(0, 0, 0, 0.6) 0 0 8px; color: #252525; font: 14px/20px Arial,Verdana,Helvetica; line-height: 20px; margin: 50px auto; text-align: left; position: relative; width: 535px; height: 500px; z-index: 999999; }
+html body #oo_waypoint_prompt h1 { display: inline-block; *display: inline; zoom: 1; font-size: 19px; font-weight: bold; margin-bottom: .6em; margin-top: 12%; margin-right: 15%; float: right; *float: none; position: absolute; left: 25px; }
+html body #oo_waypoint_prompt p { margin-bottom: 1.5em; padding: 10px; }
+html body #oo_waypoint_prompt #prompt_buttons { width: 81%; *width: 700px; margin-top: 1%; margin-left: auto; margin-right: auto; padding-bottom: 0px; position: relative; z-index: 5; display: inline; padding-left: 38px;}
+#survery_quest { 
+    padding-top: 210px !important;
+    padding-bottom: 0px !important;
+}
+#value_op {
+    font-size: 60px !important;
+    font-weight: 700 !important;
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 6px #000000;
+    margin-left: 40px !important;
+    margin-top: 120px !important;
+}
+html body #oo_waypoint_prompt #oo_launch_prompt { 
+    color:white;
+    -moz-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    box-shadow:inset 0px 0px 0px 0px #ffffff;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4AB1E4), color-stop(1, #386686) );
+    background:-moz-linear-gradient( center top, #4AB1E4 5%, #386686 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4AB1E4', endColorstr='#386686');
+    background-color:#78A8C8;
+    -webkit-border-top-left-radius:6px;
+    -moz-border-radius-topleft:6px;
+    border-top-left-radius:6px;
+    -webkit-border-top-right-radius:6px;
+    -moz-border-radius-topright:6px;
+    border-top-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
+    -moz-border-radius-bottomright:6px;
+    border-bottom-right-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+    -moz-border-radius-bottomleft:6px;
+    border-bottom-left-radius:6px;
+    text-indent:0;
+    display:inline-block;
+    color:white;
+    font-size:15px;
+    font-style:normal;
+    width: 200px;
+    line-height: 30px;
+    text-decoration:none;
+    text-align:center;
+    cursor: pointer; cursor: hand;
+}
+html body #oo_waypoint_prompt #oo_no_thanks { 
+    color:white;
+    -moz-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    box-shadow:inset 0px 0px 0px 0px #ffffff;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4AB1E4), color-stop(1, #386686) );
+    background:-moz-linear-gradient( center top, #4AB1E4 5%, #386686 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4AB1E4', endColorstr='#386686');
+    background-color:#78A8C8;
+    -webkit-border-top-left-radius:6px;
+    -moz-border-radius-topleft:6px;
+    border-top-left-radius:6px;
+    -webkit-border-top-right-radius:6px;
+    -moz-border-radius-topright:6px;
+    border-top-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
+    -moz-border-radius-bottomright:6px;
+    border-bottom-right-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+    -moz-border-radius-bottomleft:6px;
+    border-bottom-left-radius:6px;
+    text-indent:0;
+    display:inline-block;
+    color:white;
+    font-size:15px;
+    font-style:normal;
+    width: 200px;
+    line-height: 30px;
+    text-decoration:none;
+    text-align:center;
+    cursor: pointer; cursor: hand;  
+}
+html body #oo_ol_brand { background-color: white; display: block; height: 16%; position: absolute; bottom: 0; width: 100%; }
+
+
+#oo_waypoint_prompt a { background: #808284; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; transition: background .5s; -moz-transition: background .5s; -webkit-transition: background .5s; -o-transition: background .5s; }*/
+#oo_waypoint_prompt a:hover { background: #808284; }*/
+
+a#oo_launch_prompt { background: #4D9900; }
+a#oo_launch_prompt:hover { background: #4D9900; }
+
+
+#oo_close_prompt { position: absolute; display: block; background: white; height: 20px; width: 20px; border: 1px solid #cccccc; cursor: pointer; right: 5px; top: 5px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; transition: background .5s; -moz-transition: background .5s; -webkit-transition: background .5s; -o-transition: background .5s; font: 14px/20px Tahoma, Arial, Helvetica, sans-serif; text-align: center; }
+#oo_close_prompt:hover { background: #eeeeee; }
+#oo_close_prompt .screen_reader { color: transparent; display: block; position: relative; height: 0; width: 0; line-height: 0; overflow: hidden; }
+
+#oo_feedback_show p {text-shadow: 0px 0px 0 #303030; font-weight: normal;}
+
+#oo_waypoint_help p {text-shadow: 0px 0px 0 #303030; font-weight: normal;}
+
+
+.oo_waypoint_btn {
+    color:white;
+    -moz-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 0px 0px 0px #ffffff;
+    box-shadow:inset 0px 0px 0px 0px #ffffff;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4AB1E4), color-stop(1, #386686) );
+    background:-moz-linear-gradient( center top, #4AB1E4 5%, #386686 100% );
+    background-image: linear-gradient(to bottom, #4AB1E4 5%, #386686 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4AB1E4', endColorstr='#386686');
+    background-color:#78A8C8;
+    -webkit-border-top-left-radius:6px;
+    -moz-border-radius-topleft:6px;
+    border-top-left-radius:6px;
+    -webkit-border-top-right-radius:6px;
+    -moz-border-radius-topright:6px;
+    border-top-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
+    -moz-border-radius-bottomright:6px;
+    border-bottom-right-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+    -moz-border-radius-bottomleft:6px;
+    border-bottom-left-radius:6px;
+    text-indent:0;
+    display:inline-block;
+    color:white;
+    font-size:15px;
+    font-style:normal;
+    height:50px;
+    line-height:50px;
+    width:200px;
+    text-decoration:none;
+    text-align:center;
+    cursor: pointer; cursor: hand;
+    margin-top:225px;
+}
+.oo_show:hover {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+    background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+    background-color:#dfdfdf;
+}.oo_show:active {
+    position:relative;
+    top:1px;
+}
+
+#oo_waypoint_content_1 {
+    padding-top: 0px;
+    display: inline-block;
+    width: 38%;
+    margin-left: 30px;
+    margin-right: 30px;
+    height: 250px;
+}
+#oo_waypoint_content_1 p {text-align: center; font-size: 12px;}
+#oo_waypoint_content_1 div {
+    display: inline-block;
+    font-size: 1.10em !important;
+    font-weight: bold;
+    margin-right: 10px;
+    max-width: 100%;
+    text-align: center;
+    text-shadow: 1px 1px 0 #303030;
+    
+}
+
+#oo_waypoint_content_2 {
+    display: inline-block;
+    width: 41%;
+    margin-left:40px;
+    margin-right:10px;
+    height: 250px;
+    
+}
+#oo_waypoint_content_2 p {text-align: center; font-size: 12px;}
+#oo_waypoint_content_2 div {
+    display: inline-block;
+    font-size: 1.10em !important;
+    font-weight: bold;
+    margin-right: 10px;
+    max-width: 100%;
+    text-align: center;
+    text-shadow: 1px 1px 0 #303030;
+}
+#oo_waypoint_show {
+    margin-right:30px;
+}
+
+#oo_waypoint_header {
+    line-height: 2em;
+    font-size: 2em;
+    padding-top: 59px;
+    color: rgb(0, 82, 147);
+    text-align: center;
+}
+
+
+
+
+
+    
+    html body #oo_waypoint_prompt #oo_launch_prompt { display:block; width: 40%; text-decoration: none; color: white; padding: 8px 60px; margin-left:auto; margin-right: auto; }
+html body #oo_waypoint_prompt #oo_no_thanks { display:block; width: 40%; margin-top: 25px; text-decoration: none; color: white; padding: 8px 60px; margin-left:auto; margin-right: auto; }
+
+
+
+/* 
+ * All layouts 767px and down
+ */
+@media only screen and (max-width: 767px) {
+    html body #oo_invitation_prompt {
+    background: #FFF !important;
+    height: 300px;
+    width: 95%;
+    margin: 10px auto;
+    }
+
+    html body #oo_waypoint_prompt {
+    background: #FFF !important;
+    height: 300px;
+    width: 95%;
+    margin: 10px auto;
+
+    }
+    #oo_waypoint_header {
+    padding-top: 77px;
+    background-image: url("ucci_bg_slogan_text.png");
+    background-repeat: no-repeat;
+    }
+    #oo_waypoint_content_1,
+    #oo_waypoint_content_2 {
+    height: 80px;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    width: 50% !important;
+    text-align: center;
+    }   
+    #oo_waypoint_content_1 div,
+    #oo_waypoint_content_2 div {
+    min-width: 90%;
+    height: 50px;
+    margin: 10px;
+    }   
+    .oo_waypoint_btn {
+    margin-top:10px
+    }
+    #prompt_buttons {
+    width: 90% !important;
+    }
+    #survery_quest { padding-top: 10px !important;}
+    #value_op {
+    font-size: 24px !important;
+    font-weight: normal !important;
+    color: black !important;
+    text-align: left !important;
+    text-shadow: none !important;
+    margin-left: 0px !important;
+    margin-top: 30px !important;
+    }
+
+    html body #oo_invitation_prompt #oo_launch_prompt { display:block; width: 40%; text-decoration: none; color: white; padding: 8px 60px; margin-left:auto; margin-right: auto; }
+html body #oo_invitation_prompt #oo_no_thanks { display:block; width: 40%; margin-top: 25px; text-decoration: none; color: white; padding: 8px 60px; margin-left:auto; margin-right: auto; }
+    
+#oo_waypoint_prompt #oo_ol_brand_logo {margin-left: 10px; margin-right: 10px;}
+
+}
+
+@media only screen and (max-width: 550px) {
+	#oo_waypoint_content_1,
+	#oo_waypoint_content_2 {
+	    display: block !important;
+	    width: 100% !important;
+	}
+	#oo_waypoint_content_1 p,
+	#oo_waypoint_content_2 p,
+	#oo_waypoint_prompt #oo_ol_brand_footer_text {
+	    display: none;
+	}
+}
+
+/* Android, iPhone 6 ----------- */
+@media only screen and (max-device-width: 480px), screen and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) { #oo_waypoint_prompt { width: 90%; }
+  #oo_waypoint_prompt #oo_company_logo { height: 80px; display: none !important;} }
+/* iPhone 5, 4 ----------- */
+@media only screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2), screen and (device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2) { #oo_waypoint_prompt { width: 90%; height: 90%; overflow-y: scroll; overflow-x: hidden; }
+  #oo_waypoint_prompt #oo_company_logo { height: 80px; display: none !important; }
+  #oo_waypoint_prompt #oo_waypoint_content { padding: 20px 10% 20px 10%; }
+  #oo_waypoint_prompt #oo_waypoint_content #ol_brand_logo { margin: 0 0 0 0; } }
+/* iPhone 4 only ----------- */
+@media screen and (device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2) { #oo_waypoint_prompt #oo_close_prompt { right: -70px; } }
+#oo_overlay, #oo_invitation_overlay, #oo_waypoint_overlay { background: white url(oo_loading.gif) 50% 80px no-repeat; display: block; height: 1000%; left: 0; position: fixed; top: 0; width: 100%; z-index: 999998; opacity: 0.5; filter: alpha(opacity=50); }
+#oo_overlay.no_loading, #oo_invitation_overlay.no_loading, #oo_waypoint_overlay.no_loading { background: white; opacity: 0.5; filter: alpha(opacity=50); }
+
+@media print { #oo_bar, .oo_feedback_float, #oo_tab { display: none; } }
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-device-width: 480px) { /* Styles */
+  html body #oo_invitation_prompt { -webkit-text-size-adjust: none; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; width: 90%; padding: 3%; background-img: none; background: none; } }
+@media all and (-webkit-min-device-pixel-ratio: 2) { #oo_ol_brand { background: none; -webkit-background-size: 85px 13px; } }
+#oo_overlay, #oo_invitation_overlay { background: black url(oo_loading.gif) 50% 80px no-repeat; display: block; height: 1000%; left: 0; position: fixed; top: 0; width: 100%; z-index: 999998; opacity: 0.5; filter: alpha(opacity=50); }
+#oo_overlay.no_loading, #oo_invitation_overlay.no_loading { background: black; opacity: 0.5; filter: alpha(opacity=50); }
+
+@media print { #oo_bar, .oo_feedback_float, #oo_tab { display: none; } }
+
+
