@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>FinderConnect Demo - Location Finder Widget</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="FinderConnect Location Finder Widget Demo" name="keywords" />
+  <meta content="Demo page for FinderConnect location finder widget with marketing attribution" name="description" />
+
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon" />
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
+    rel="stylesheet" />
+
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Libraries Stylesheet -->
+  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+  <link href="lib/animate/animate.min.css" rel="stylesheet" />
+  <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+  <link href="lib/twentytwenty/twentytwenty.css" rel="stylesheet" />
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Template Stylesheet -->
+  <link href="css/style.css" rel="stylesheet" />
+
+  <style>
+    .documentation-section {
+      background: #f8f9fa;
+      border-left: 4px solid #06A3DA;
+      padding: 2rem;
+      margin: 2rem 0;
+      border-radius: 8px;
+    }
+
+    .code-block {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 1.5rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    .code-block code {
+      color: #f8f8f2;
+    }
+
+    .attribute-table {
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    .attribute-table th {
+      background: #06A3DA;
+      color: white;
+      padding: 0.75rem;
+    }
+
+    .attribute-table td {
+      padding: 0.75rem;
+      border: 1px solid #dee2e6;
+    }
+
+    .widget-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      margin: 2rem 0;
+    }
+
+    .info-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: #06A3DA;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Spinner Start -->
+  <div id="spinner"
+    class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-grow text-primary m-1" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-dark m-1" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-secondary m-1" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <!-- Spinner End -->
+
+  <!-- Topbar Start -->
+  <div class="container-fluid bg-light ps-5 pe-0 d-none d-lg-block">
+    <div class="row gx-0">
+      <div class="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
+        <div class="d-inline-flex align-items-center">
+          <small class="py-2"><i class="far fa-clock text-primary me-2"></i>Opening Hours: Mon
+            - Tues : 6.00 am - 10.00 pm, Sunday Closed
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6 text-center text-lg-end">
+        <div class="position-relative d-inline-flex align-items-center bg-primary text-white top-shape px-5">
+          <div class="me-3 pe-3 border-end py-2">
+            <p class="m-0">
+              <i class="fa fa-envelope-open me-2"></i>info@example.com
+            </p>
+          </div>
+          <div class="py-2">
+            <p class="m-0">
+              <i class="fa fa-phone-alt me-2"></i>+012 345 6789
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Topbar End -->
+
+  <!-- Navbar Start -->
+  <nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm px-5 py-3 py-lg-0">
+    <a href="index.html" class="navbar-brand p-0">
+      <h1 class="m-0 text-primary">
+        <i class="fa fa-tooth me-2"></i>DentCare
+      </h1>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto py-0">
+        <a href="index.html" class="nav-item nav-link">Home</a>
+        <a href="about.html" class="nav-item nav-link">About</a>
+        <a href="service.html" class="nav-item nav-link">Service</a>
+        <a href="finderconnect-map.html" class="nav-item nav-link">FinderConnect</a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+          <div class="dropdown-menu m-0">
+            <a href="development.html" class="dropdown-item">Development</a>
+            <a href="staging.html" class="dropdown-item">Staging</a>
+            <a href="production.html" class="dropdown-item">Production</a>
+            <a href="finderconnect-map.html" class="dropdown-item active">FinderConnect Map</a>
+          </div>
+        </div>
+        <a href="contact.html" class="nav-item nav-link">Contact</a>
+      </div>
+      <button type="button" class="btn text-dark" data-bs-toggle="modal" data-bs-target="#searchModal">
+        <i class="fa fa-search"></i>
+      </button>
+      <a data-scheduleconnect-button="" class="btn btn-primary py-2 px-4 ms-3">Appointment</a>
+    </div>
+  </nav>
+  <!-- Navbar End -->
+
+  <!-- Full Screen Search Start -->
+  <div class="modal fade" id="searchModal" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content" style="background: rgba(9, 30, 62, 0.7)">
+        <div class="modal-header border-0">
+          <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex align-items-center justify-content-center">
+          <div class="input-group" style="max-width: 600px">
+            <input type="text" class="form-control bg-transparent border-primary p-3"
+              placeholder="Type search keyword" />
+            <button class="btn btn-primary px-4">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Full Screen Search End -->
+
+  <!-- Hero Start -->
+  <div class="container-fluid bg-primary py-5 hero-header mb-5">
+    <div class="row py-3">
+      <div class="col-12 text-center">
+        <h1 class="display-3 text-white animated zoomIn">FinderConnect Map Widget</h1>
+        <a href="index.html" class="h4 text-white">Home</a>
+        <i class="far fa-circle text-white px-2"></i>
+        <a href="#" class="h4 text-white">FinderConnect Demo</a>
+      </div>
+    </div>
+  </div>
+  <!-- Hero End -->
+
+  <!-- Documentation Section Start -->
+  <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-12">
+          <div class="section-title mb-4">
+            <h5 class="position-relative d-inline-block text-primary text-uppercase">
+              FinderConnect Location Widget
+            </h5>
+            <h1 class="display-5 mb-0">
+              Find Healthcare Providers Near You
+            </h1>
+          </div>
+
+          <div class="documentation-section">
+            <h3><i class="fa fa-info-circle text-primary me-2"></i>What is FinderConnect?</h3>
+            <p class="mb-3">
+              FinderConnect is a powerful location finder widget that helps patients discover and connect with
+              healthcare providers in their area.
+              The widget seamlessly integrates into your website and provides an interactive map experience with partner
+              branding and full marketing attribution support.
+            </p>
+
+            <div class="mb-4">
+              <span class="info-badge"><i class="fa fa-map-marker-alt me-2"></i>Interactive Map</span>
+              <span class="info-badge"><i class="fa fa-filter me-2"></i>Smart Filtering</span>
+              <span class="info-badge"><i class="fa fa-chart-line me-2"></i>Marketing Attribution</span>
+              <span class="info-badge"><i class="fa fa-mobile-alt me-2"></i>Mobile Responsive</span>
+            </div>
+
+            <h4 class="mt-4"><i class="fa fa-chart-bar text-primary me-2"></i>Marketing Attribution & UTM Parameters
+            </h4>
+            <p>
+              FinderConnect automatically captures and preserves marketing attribution data throughout the patient
+              journey.
+              UTM parameters and click IDs from your campaigns are automatically passed through to the embedded iframe,
+              ensuring accurate tracking from initial discovery to appointment booking.
+            </p>
+
+            <h5 class="mt-3">Supported Attribution Parameters:</h5>
+            <ul>
+              <li><strong>utm_source</strong> - Identifies the source of traffic (e.g., google, facebook)</li>
+              <li><strong>utm_medium</strong> - Identifies the medium (e.g., cpc, email, social)</li>
+              <li><strong>utm_campaign</strong> - Identifies the specific campaign</li>
+              <li><strong>utm_term</strong> - Identifies paid search keywords</li>
+              <li><strong>utm_content</strong> - Identifies specific ad or link variations</li>
+              <li><strong>gclid</strong> - Google Click ID for Google Ads tracking</li>
+              <li><strong>fbclid</strong> - Facebook Click ID for Facebook Ads tracking</li>
+              <li><strong>msclkid</strong> - Microsoft Click ID for Bing Ads tracking</li>
+            </ul>
+          </div>
+
+          <div class="documentation-section">
+            <h3><i class="fa fa-code text-primary me-2"></i>SDK Integration Guide</h3>
+
+            <div class="alert alert-primary">
+              <i class="fa fa-book me-2"></i>
+              <strong>Full Documentation:</strong> For complete integration details, advanced features, and API
+              reference, visit the
+              <a href="https://docs.intelibly.com/docs/finderconnect/finderconnect-sdk/" target="_blank"
+                class="alert-link">
+                <strong>official FinderConnect SDK documentation</strong> <i class="fa fa-external-link-alt"></i>
+              </a>
+            </div>
+
+            <h4 class="mt-3">Quick Start Integration</h4>
+            <p>Add the FinderConnect SDK script to your HTML page before the closing <code>&lt;/body&gt;</code> tag:</p>
+
+            <div class="code-block">
+              <code>&lt;!-- FinderConnect SDK --&gt;
+&lt;script src="https://app.dev.intelibly.com/finderconnect.js?partner_id=YOUR_PARTNER_ID"&gt;&lt;/script&gt;
+
+&lt;!-- Add the widget element where you want it to appear --&gt;
+&lt;finderconnect&gt;&lt;/finderconnect&gt;</code>
+            </div>
+
+            <h4 class="mt-4">Advanced Configuration</h4>
+            <p>Customize the widget appearance and behavior with attributes:</p>
+
+            <div class="code-block">
+              <code>&lt;finderconnect
+  partner-id="YOUR_PARTNER_ID"
+  width="100%"
+  height="600px"
+  primary-color="#06A3DA"
+  secondary-color="#13547A"
+&gt;&lt;/finderconnect&gt;</code>
+            </div>
+
+            <h4 class="mt-4">Configuration Attributes</h4>
+            <table class="table table-bordered attribute-table">
+              <thead>
+                <tr>
+                  <th>Attribute</th>
+                  <th>Description</th>
+                  <th>Required</th>
+                  <th>Default</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>data-partner-id</code></td>
+                  <td>Your unique partner identifier</td>
+                  <td>Yes</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td><code>data-primary-color</code></td>
+                  <td>Primary brand color (hex format)</td>
+                  <td>No</td>
+                  <td>#06A3DA</td>
+                </tr>
+                <tr>
+                  <td><code>data-secondary-color</code></td>
+                  <td>Secondary brand color (hex format)</td>
+                  <td>No</td>
+                  <td>#13547A</td>
+                </tr>
+                <tr>
+                  <td><code>data-default-location</code></td>
+                  <td>Initial map center location</td>
+                  <td>No</td>
+                  <td>User's location</td>
+                </tr>
+                <tr>
+                  <td><code>data-radius</code></td>
+                  <td>Search radius in miles</td>
+                  <td>No</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td><code>data-show-filters</code></td>
+                  <td>Show/hide filter options</td>
+                  <td>No</td>
+                  <td>true</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 class="mt-4"><i class="fa fa-exclamation-triangle text-warning me-2"></i>Single Instance Requirement
+            </h4>
+            <p>
+              The FinderConnect SDK is designed to render only <strong>one widget instance per page</strong>.
+              If multiple <code>&lt;finderconnect&gt;</code> elements are detected, the SDK will:
+            </p>
+            <ul>
+              <li>Initialize only the first instance found in the DOM</li>
+              <li>Display a console warning:
+                <code>"Multiple &lt;finderconnect&gt; elements detected. Only the first instance will be initialized."</code>
+              </li>
+              <li>Add a <code>data-fc-ignored="true"</code> attribute to subsequent elements</li>
+            </ul>
+
+            <div class="alert alert-info mt-3">
+              <i class="fa fa-lightbulb me-2"></i>
+              <strong>Best Practice:</strong> Always include exactly one <code>&lt;finderconnect&gt;</code> element per
+              page to avoid confusion and ensure proper initialization.
+            </div>
+          </div>
+
+          <div class="documentation-section">
+            <h3><i class="fa fa-paint-brush text-primary me-2"></i>Color Customization</h3>
+            <p>
+              Customize the widget's appearance to match your brand by configuring color attributes.
+              The widget uses a two-color system that adapts to your brand guidelines:
+            </p>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h5>Primary Color</h5>
+                    <p class="mb-2">Used for:</p>
+                    <ul class="small">
+                      <li>Buttons and CTAs</li>
+                      <li>Active states</li>
+                      <li>Links and accents</li>
+                    </ul>
+                    <div
+                      style="height: 60px; background: #06A3DA; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                      #06A3DA
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h5>Secondary Color</h5>
+                    <p class="mb-2">Used for:</p>
+                    <ul class="small">
+                      <li>Headers and titles</li>
+                      <li>Hover states</li>
+                      <li>Secondary elements</li>
+                    </ul>
+                    <div
+                      style="height: 60px; background: #13547A; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                      #13547A
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Documentation Section End -->
+
+  <!-- Widget Demo Section Start -->
+  <div class="container-fluid py-5 bg-light wow fadeInUp" data-wow-delay="0.3s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="section-title mb-4 text-center">
+            <h5 class="position-relative d-inline-block text-primary text-uppercase">
+              Live Demo
+            </h5>
+            <h2 class="display-6 mb-0">
+              Try the FinderConnect Widget
+            </h2>
+            <p class="mt-3">
+              Search for healthcare providers in your area using the interactive map below
+            </p>
+          </div>
+
+          <div class="widget-container">
+            <!-- FinderConnect Widget -->
+            <finderconnect partner-id="f16d1496-6b2e-448c-8bed-75614be71d91" width="100%" height="600px"
+              primary-color="#06A3DA" secondary-color="#13547A">
+            </finderconnect>
+          </div>
+
+          <div class="alert alert-success mt-4">
+            <i class="fa fa-check-circle me-2"></i>
+            <strong>Widget Active:</strong> The FinderConnect widget above is fully functional.
+            Try searching for locations, applying filters, and notice how the interface adapts to the configured brand
+            colors.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Widget Demo Section End -->
+
+  <!-- Example URL Parameters Section Start -->
+  <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.5s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="documentation-section">
+            <h3><i class="fa fa-link text-primary me-2"></i>Example URLs with Attribution</h3>
+            <p>Here are example URLs showing how marketing parameters are preserved:</p>
+
+            <div class="code-block">
+              <code><!-- Google Ads Campaign -->
+https://yoursite.com/finderconnect-map.html?utm_source=google&utm_medium=cpc&utm_campaign=dental-implants&gclid=abc123
+
+<!-- Facebook Campaign -->
+https://yoursite.com/finderconnect-map.html?utm_source=facebook&utm_medium=social&utm_campaign=spring-promo&fbclid=xyz789
+
+<!-- Email Campaign -->
+https://yoursite.com/finderconnect-map.html?utm_source=newsletter&utm_medium=email&utm_campaign=monthly-digest</code>
+            </div>
+
+            <p class="mt-3">
+              All UTM parameters and click IDs in the page URL are automatically captured and forwarded to the widget's
+              iframe,
+              ensuring complete attribution tracking throughout the patient journey.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Example URL Parameters Section End -->
+
+  <!-- Newsletter Start -->
+  <div class="container-fluid position-relative pt-5 wow fadeInUp" data-wow-delay="0.1s" style="z-index: 1">
+    <div class="container">
+      <div class="bg-primary p-5">
+        <form class="mx-auto" style="max-width: 600px">
+          <div class="input-group">
+            <input type="text" class="form-control border-white p-3" placeholder="Your Email" />
+            <button class="btn btn-dark px-4">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Newsletter End -->
+
+  <!-- Footer Start -->
+  <div class="container-fluid bg-dark text-light py-5 wow fadeInUp" data-wow-delay="0.3s" style="margin-top: -75px">
+    <div class="container pt-5">
+      <div class="row g-5 pt-4">
+        <div class="col-lg-3 col-md-6">
+          <h3 class="text-white mb-4">Quick Links</h3>
+          <div class="d-flex flex-column justify-content-start">
+            <a class="text-light mb-2" href="index.html"><i class="bi bi-arrow-right text-primary me-2"></i>Home</a>
+            <a class="text-light mb-2" href="about.html"><i class="bi bi-arrow-right text-primary me-2"></i>About Us</a>
+            <a class="text-light mb-2" href="service.html"><i class="bi bi-arrow-right text-primary me-2"></i>Our
+              Services</a>
+            <a class="text-light mb-2" href="staging.html"><i
+                class="bi bi-arrow-right text-primary me-2"></i>ScheduleConnect Demo</a>
+            <a class="text-light" href="contact.html"><i class="bi bi-arrow-right text-primary me-2"></i>Contact Us</a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h3 class="text-white mb-4">Widget Demos</h3>
+          <div class="d-flex flex-column justify-content-start">
+            <a class="text-light mb-2" href="development.html"><i
+                class="bi bi-arrow-right text-primary me-2"></i>Development</a>
+            <a class="text-light mb-2" href="staging.html"><i
+                class="bi bi-arrow-right text-primary me-2"></i>Staging</a>
+            <a class="text-light mb-2" href="production.html"><i
+                class="bi bi-arrow-right text-primary me-2"></i>Production</a>
+            <a class="text-light mb-2" href="finderconnect-map.html"><i
+                class="bi bi-arrow-right text-primary me-2"></i>FinderConnect Map</a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h3 class="text-white mb-4">Get In Touch</h3>
+          <p class="mb-2">
+            <i class="bi bi-geo-alt text-primary me-2"></i>123 Street, New York, USA
+          </p>
+          <p class="mb-2">
+            <i class="bi bi-envelope-open text-primary me-2"></i>info@example.com
+          </p>
+          <p class="mb-0">
+            <i class="bi bi-telephone text-primary me-2"></i>+012 345 67890
+          </p>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h3 class="text-white mb-4">Follow Us</h3>
+          <div class="d-flex">
+            <a class="btn btn-lg btn-primary btn-lg-square rounded me-2" href="#"><i
+                class="fab fa-twitter fw-normal"></i></a>
+            <a class="btn btn-lg btn-primary btn-lg-square rounded me-2" href="#"><i
+                class="fab fa-facebook-f fw-normal"></i></a>
+            <a class="btn btn-lg btn-primary btn-lg-square rounded me-2" href="#"><i
+                class="fab fa-linkedin-in fw-normal"></i></a>
+            <a class="btn btn-lg btn-primary btn-lg-square rounded" href="#"><i
+                class="fab fa-instagram fw-normal"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid text-light py-4" style="background: #051225">
+    <div class="container">
+      <div class="row g-0">
+        <div class="col-md-6 text-center text-md-start">
+          <p class="mb-md-0">
+            &copy;
+            <a class="text-white border-bottom" href="#">FinderConnect Demo</a>.
+            All Rights Reserved.
+          </p>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <p class="mb-0">
+            Powered by
+            <a class="text-white border-bottom" href="https://intelibly.com">Intelibly</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer End -->
+
+  <!-- Back to Top -->
+  <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="lib/wow/wow.min.js"></script>
+  <script src="lib/easing/easing.min.js"></script>
+  <script src="lib/waypoints/waypoints.min.js"></script>
+  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="lib/tempusdominus/js/moment.min.js"></script>
+  <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+  <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+  <script src="lib/twentytwenty/jquery.event.move.js"></script>
+  <script src="lib/twentytwenty/jquery.twentytwenty.js"></script>
+
+  <!-- Template Javascript -->
+  <script src="js/main.js"></script>
+
+  <!-- FinderConnect SDK - Load the actual SDK from dev server -->
+  <script src="https://app.dev.intelibly.com/finderconnect.js?partner_id=f3a839d6-dd8f-4ffd-b4b8-d9a6c3614e86"></script>
+
+  <!-- ScheduleConnect Widget (for appointment booking from navbar) -->
+  <script async
+    src="https://app.dev.intelibly.com/sc/widget/embed.js?practice_id=f4809143-cfa4-43b3-a0e0-b27c6aac1b3e"></script>
+  <sc-modal></sc-modal>
+</body>
+
+</html>
