@@ -151,14 +151,19 @@
         <a href="index.html" class="nav-item nav-link">Home</a>
         <a href="about.html" class="nav-item nav-link">About</a>
         <a href="service.html" class="nav-item nav-link">Service</a>
-        <a href="finderconnect-map.html" class="nav-item nav-link">FinderConnect</a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">FinderConnect</a>
+          <div class="dropdown-menu m-0">
+            <a href="finderconnect-map.html" class="dropdown-item active">Map Widget</a>
+            <a href="attribution-demo.html" class="dropdown-item">Attribution Demo</a>
+          </div>
+        </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
           <div class="dropdown-menu m-0">
             <a href="development.html" class="dropdown-item">Development</a>
             <a href="staging.html" class="dropdown-item">Staging</a>
             <a href="production.html" class="dropdown-item">Production</a>
-            <a href="finderconnect-map.html" class="dropdown-item active">FinderConnect Map</a>
           </div>
         </div>
         <a href="contact.html" class="nav-item nav-link">Contact</a>
@@ -596,7 +601,7 @@ https://yoursite.com/finderconnect-map.html?utm_source=newsletter&utm_medium=ema
   <script src="js/main.js"></script>
 
   <!-- FinderConnect SDK - Load the actual SDK from dev server -->
-  <script src="https://app.dev.intelibly.com/finderconnect.js?partner_id=f3a839d6-dd8f-4ffd-b4b8-d9a6c3614e86"></script>
+  <script src="https://app.dev.intelibly.com/finderconnect.js?partner_id=f16d1496-6b2e-448c-8bed-75614be71d91"></script>
 
   <!-- ScheduleConnect Widget (for appointment booking from navbar) -->
   <script async
