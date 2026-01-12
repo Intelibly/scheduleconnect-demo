@@ -3,9 +3,10 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Attribution Demo - FinderConnect Map</title>
+  <title>FinderConnect Button SDK</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <meta content="Attribution demo for FinderConnect map and booking components" name="description" />
+  <meta content="Attribution demo for Intelibly finderCONNECT Button SDK using data-provider-location buttons"
+    name="description" />
 
   <!-- Favicon -->
   <link href="img/favicon.ico" rel="icon" />
@@ -81,7 +82,7 @@
       border-radius: 4px;
     }
 
-    .iframe-debug {
+    .sdk-debug {
       background: #f8f9fa;
       border-left: 4px solid #06A3DA;
       padding: 1rem 1.25rem;
@@ -89,10 +90,54 @@
       margin-bottom: 2rem;
     }
 
-    .iframe-url {
+    .sdk-value {
       word-break: break-all;
       font-family: monospace;
       font-size: 0.85rem;
+    }
+
+    .location-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .location-row {
+      border: 1px solid #e3e6f0;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .location-address {
+      color: #5a5f7a;
+      line-height: 1.45;
+    }
+
+    .location-address .location-title {
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .location-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    @media (min-width: 768px) {
+      .location-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .location-actions {
+        justify-content: flex-end;
+      }
     }
 
     .instructions-box h5 {
@@ -189,7 +234,7 @@
           <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">FinderConnect</a>
           <div class="dropdown-menu m-0">
             <a href="finderconnect-map.html" class="dropdown-item">Map Widget</a>
-            <a href="attribution-demo.html" class="dropdown-item active">Attribution Demo</a>
+            <a href="finderconnect-button-demo.html" class="dropdown-item active">Button SDK</a>
           </div>
         </div>
         <div class="nav-item dropdown">
@@ -236,13 +281,12 @@
     <div class="row py-3">
       <div class="col-12 text-center">
         <h1 class="display-3 text-white animated zoomIn">
-          <i class="fa fa-flask me-3"></i>Attribution Demo
+          <i class="fa fa-flask me-3"></i>FinderConnect Button SDK
         </h1>
-        <p class="text-white mb-4 animated zoomIn">Test marketing attribution flow with FinderConnect Map and booking
-          components</p>
+        <p class="text-white mb-4 animated zoomIn">Test marketing attribution flow with the finderCONNECT Button SDK</p>
         <a href="index.html" class="h4 text-white">Home</a>
         <i class="far fa-circle text-white px-2"></i>
-        <a href="#" class="h4 text-white">Attribution Demo</a>
+        <a href="#" class="h4 text-white">Button SDK</a>
       </div>
     </div>
   </div>
@@ -255,17 +299,21 @@
       <h4><i class="fa fa-chart-line me-2"></i>Attribution Tracking Active
         <span class="status-badge status-success">LIVE</span>
       </h4>
-      <p class="mb-2">Marketing attribution parameters detected and will be passed to booking components:</p>
+      <p class="mb-2">Marketing attribution parameters detected and will be passed to finderCONNECT bookings:</p>
       <div id="attributionParams"></div>
       <div class="console-output mt-3" id="consoleOutput">
         <div><i class="fa fa-check-circle me-2"></i>Attribution data captured successfully</div>
       </div>
     </div>
 
-    <div class="iframe-debug">
-      <h5 class="mb-2"><i class="fa fa-link text-primary me-2"></i>FinderConnect Iframe URL</h5>
-      <div id="iframeUrlStatus" class="small text-muted mb-2">Waiting for FinderConnect iframe...</div>
-      <div id="iframeUrlValue" class="iframe-url text-muted">Loading...</div>
+    <div class="sdk-debug">
+      <h5 class="mb-2"><i class="fa fa-link text-primary me-2"></i>finderCONNECT SDK Status</h5>
+      <div id="sdkStatus" class="small text-muted mb-2">Checking SDK status...</div>
+      <div class="small text-muted mb-2">Provider/location buttons detected: <span id="buttonCount">0</span></div>
+      <div class="small text-muted">SDK Partner ID</div>
+      <div class="sdk-value text-primary">f16d1496-6b2e-448c-8bed-75614be71d91</div>
+      <div class="small text-muted mt-2">Sample Provider/Location ID</div>
+      <div id="sampleProviderLocation" class="sdk-value text-muted">Waiting for SDK...</div>
     </div>
 
     <!-- Test Campaign Buttons -->
@@ -288,13 +336,16 @@
         <button onclick="loadMicrosoftAds()" class="btn btn-info">
           <i class="fab fa-microsoft me-2"></i>Microsoft Ads Campaign
         </button>
-        <button id="clearAttributionBtn" onclick="clearAttribution()" class="btn btn-outline-danger btn-clear" style="display: none;">
+        <button id="clearAttributionBtn" type="button" class="btn btn-outline-danger btn-clear" style="display: none;">
           <i class="fa fa-times me-2"></i>Clear Attribution
         </button>
       </div>
       <div class="alert alert-info mb-0">
         <i class="fa fa-info-circle me-2"></i>
         <strong>Connected to:</strong> <code>app.dev.intelibly.com</code> (Staging Backend)
+      </div>
+      <div class="small text-muted mt-2">
+        If no attribution parameters are present, the page seeds demo UTM values for convenience.
       </div>
     </div>
 
@@ -304,30 +355,97 @@
       <ol>
         <li><strong>Load Attribution Data:</strong> Click one of the campaign buttons above (e.g., "Google Ads
           Campaign")</li>
-        <li><strong>Verify Capture:</strong> The purple banner will appear showing captured attribution parameters</li>
-        <li><strong>Search Providers:</strong> Use the map widget below (try ZIP <strong>75217</strong> or any ZIP)</li>
-        <li><strong>Book Appointment:</strong> Click "Book Now" on any provider to open the booking component</li>
-        <li><strong>Verify Flow:</strong> Check browser console (F12) to see attribution data being passed to the
-          booking iframe</li>
+        <li><strong>Verify Capture:</strong> The banner will appear showing captured attribution parameters</li>
+        <li><strong>Browse Provider/Locations:</strong> Review the provider/location listings below</li>
+        <li><strong>Book Appointment:</strong> Click "Book Now" on any provider/location</li>
+        <li><strong>Verify Flow:</strong> Check browser console (F12) to confirm the SDK loads and detects buttons with
+          <code>data-provider-location</code> attributes
+        </li>
         <li><strong>Backend Verification:</strong> Attribution data is automatically saved with the booking record in
           the database</li>
       </ol>
     </div>
 
-    <!-- FinderConnect Map Widget -->
+    <!-- finderCONNECT Button Listings -->
     <div class="widget-container">
       <h3 class="mb-4">
-        <i class="fa fa-map-marked-alt text-primary me-2"></i>FinderConnect Provider Search
+        <i class="fa fa-hand-point-right text-primary me-2"></i>Provider/Location Listings with finderCONNECT Button
         <span class="status-badge status-pending">Live Demo</span>
       </h3>
       <p class="mb-4">
-        Search for providers below. When you click "Book Now", attribution data will automatically flow to the booking
-        component.
+        Each listing includes a "Book Now" button with <code>data-provider-location="provider_id:location_id"</code>
+        attribute.
+        The finderCONNECT SDK automatically detects these buttons and handles the booking flow with attribution data.
       </p>
+      <div class="alert alert-success mb-3">
+        <i class="fa fa-check-circle me-2"></i>
+        <strong>Live Configuration:</strong> Using partner internal IDs from staging. The finderCONNECT SDK will
+        handle button clicks automatically.
+      </div>
 
-      <finderconnect partner-id="f16d1496-6b2e-448c-8bed-75614be71d91" width="100%" height="600px"
-        primary-color="#06A3DA" secondary-color="#13547A">
-      </finderconnect>
+      <div class="location-list">
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">1205 W MCDERMOTT DR STE 120</div>
+            <div>ALLEN, TX 75013</div>
+          </div>
+          <div class="location-actions">
+            <button type="button" class="btn btn-primary px-4" data-provider-location="36031137:9656713">
+              Book Now
+            </button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">4150 Belt Line Rd</div>
+            <div>Addison, Texas 75001-4354</div>
+            <div>United States of America</div>
+          </div>
+          <div class="location-actions">
+            <button type="button" class="btn btn-primary px-4" data-provider-location="16956789:34030988">
+              Book Now
+            </button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">4562 I-10</div>
+            <div>San Antonio, Texas 78219-4205</div>
+            <div>United States of America</div>
+          </div>
+          <div class="location-actions">
+            <button type="button" class="btn btn-primary px-4" data-provider-location="31243990:49827621">
+              Book Now
+            </button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">1144 SW 104th</div>
+            <div>OKLAHOMA CITY, OK 73139</div>
+          </div>
+          <div class="location-actions">
+            <button type="button" class="btn btn-primary px-4" data-provider-location="39991578:8152153">
+              Book Now
+            </button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">456 Sesame Street</div>
+            <div>San Antonio, TX 78213</div>
+            <div>United States of America</div>
+          </div>
+          <div class="location-actions">
+            <button type="button" class="btn btn-primary px-4" data-provider-location="34643360:47594953">
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="text-muted small mt-3 mb-0">
+        Buttons use <code>provider_internal_id:location_internal_id</code> from partner mappings.
+      </p>
     </div>
 
     <!-- What's Being Tested -->
@@ -342,9 +460,15 @@
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>URL parameter extraction</li>
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Attribution data capture (UTM params,
                 click IDs)</li>
-              <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Data passing to FinderConnect iframe
+              <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>finderCONNECT button binding via
+                <code>data-provider-location</code>
               </li>
-              <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Booking component integration</li>
+              <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Provider and location identification
+                using
+                <code>provider_id:location_id</code> format
+              </li>
+              <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Automatic SDK handling of booking flow
+              </li>
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Backend storage (staging database)
               </li>
             </ul>
@@ -383,8 +507,8 @@
             <a class="text-light mb-2" href="index.html"><i class="bi bi-arrow-right text-primary me-2"></i>Home</a>
             <a class="text-light mb-2" href="finderconnect-map.html"><i
                 class="bi bi-arrow-right text-primary me-2"></i>Map Widget Demo</a>
-            <a class="text-light mb-2" href="attribution-demo.html"><i
-                class="bi bi-arrow-right text-primary me-2"></i>Attribution Demo</a>
+            <a class="text-light mb-2" href="finderconnect-button-demo.html"><i
+                class="bi bi-arrow-right text-primary me-2"></i>Button SDK</a>
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
@@ -393,8 +517,8 @@
             <a href="https://docs.intelibly.com" target="_blank" class="text-light">API Documentation</a>
           </p>
           <p class="text-light mb-2"><i class="fa fa-code text-primary me-2"></i>
-            <a href="https://docs.intelibly.com/docs/finderconnect" target="_blank" class="text-light">FinderConnect
-              SDK</a>
+            <a href="https://docs.intelibly.com/docs/category/finderconnect-sdk" target="_blank"
+              class="text-light">finderCONNECT SDK</a>
           </p>
         </div>
       </div>
@@ -404,7 +528,7 @@
     <div class="container">
       <div class="row g-0">
         <div class="col-md-6 text-center text-md-start">
-          <p class="mb-md-0">&copy; <a class="text-white border-bottom" href="#">Attribution Demo</a>. All Rights
+          <p class="mb-md-0">&copy; <a class="text-white border-bottom" href="#">Button SDK</a>. All Rights
             Reserved.</p>
         </div>
         <div class="col-md-6 text-center text-md-end">
@@ -425,8 +549,9 @@
   <!-- Template Javascript -->
   <script src="js/main.js"></script>
 
-  <!-- FinderConnect SDK -->
-  <script src="https://app.dev.intelibly.com/finderconnect.js?partner_id=f16d1496-6b2e-448c-8bed-75614be71d91"></script>
+  <!-- finderCONNECT Button SDK (staging) -->
+  <script id="finderconnect-sdk" type="module"
+    src="https://app.dev.intelibly.com/partners/f16d1496-6b2e-448c-8bed-75614be71d91/sdk.js"></script>
 
   <!-- Attribution Tracking JavaScript -->
   <script>
@@ -453,6 +578,33 @@
       );
     }
 
+    let finderconnectScriptLoaded = false;
+    const demoAttributionParams = {
+      utm_source: 'demo',
+      utm_medium: 'website',
+      utm_campaign: 'attribution-demo',
+      utm_content: 'select-button',
+      gclid: 'demo_gclid_123'
+    };
+
+    function seedDemoAttributionIfEmpty() {
+      // Check if user explicitly cleared attribution
+      if (sessionStorage.getItem('attribution_cleared') === 'true') {
+        return;
+      }
+
+      const attribution = getAttributionData();
+      if (Object.keys(attribution).length > 0) {
+        return;
+      }
+
+      const url = new URL(window.location.href);
+      Object.entries(demoAttributionParams).forEach(([key, value]) => {
+        url.searchParams.set(key, value);
+      });
+      window.history.replaceState({}, '', url.toString());
+    }
+
     // Display attribution banner if parameters exist
     function displayAttributionBanner() {
       const attribution = getAttributionData();
@@ -473,11 +625,11 @@
 
         // Update console output
         let consoleHTML = '<div><i class="fa fa-check-circle me-2"></i>Attribution data captured successfully</div>';
-        consoleHTML += '<div class="mt-2">📊 Captured Parameters:</div>';
+        consoleHTML += '<div class="mt-2">Captured Parameters:</div>';
         for (const [key, value] of Object.entries(attribution)) {
-          consoleHTML += `<div class="ms-3">  • ${key}: "${value}"</div>`;
+          consoleHTML += `<div class="ms-3">- ${key}: "${value}"</div>`;
         }
-        consoleHTML += '<div class="mt-2">✅ Ready to pass to booking components</div>';
+        consoleHTML += '<div class="mt-2">Ready to pass to finderCONNECT Button bookings</div>';
         consoleOutput.innerHTML = consoleHTML;
 
         // Show the banner
@@ -487,119 +639,132 @@
         }
 
         // Log to console
-        console.log('📊 Attribution Data Captured:', attribution);
-        console.log('✅ This data will be automatically passed to booking components when users click "Book Now"');
-        console.log('🔗 Backend: app.dev.intelibly.com (staging)');
+        console.log('Attribution Data Captured:', attribution);
+        console.log('This data will be automatically passed to finderCONNECT bookings by the SDK');
+        console.log('Backend: app.dev.intelibly.com (staging)');
       }
     }
 
     // Test campaign functions
     function loadGoogleAds() {
+      sessionStorage.removeItem('attribution_cleared');
       const url = window.location.pathname + '?utm_source=google&utm_medium=cpc&utm_campaign=dental-implants-2024&utm_term=dentist+near+me&gclid=EAIaIQobChMI_demo_google_123';
       window.location.href = url;
     }
 
     function loadFacebookAds() {
+      sessionStorage.removeItem('attribution_cleared');
       const url = window.location.pathname + '?utm_source=facebook&utm_medium=social&utm_campaign=spring-dental-promo&utm_content=carousel-ad&fbclid=IwAR_demo_facebook_456';
       window.location.href = url;
     }
 
     function loadEmailCampaign() {
+      sessionStorage.removeItem('attribution_cleared');
       const url = window.location.pathname + '?utm_source=newsletter&utm_medium=email&utm_campaign=monthly-digest&utm_content=cta-button';
       window.location.href = url;
     }
 
     function loadMicrosoftAds() {
+      sessionStorage.removeItem('attribution_cleared');
       const url = window.location.pathname + '?utm_source=bing&utm_medium=cpc&utm_campaign=dental-services&utm_term=dentist+75217&msclkid=demo_microsoft_789';
       window.location.href = url;
     }
 
     function clearAttribution() {
-      window.location.href = window.location.pathname;
+      // Set a flag to prevent auto-seeding demo data after clearing
+      sessionStorage.setItem('attribution_cleared', 'true');
+      // Clear all URL parameters and reload
+      const baseUrl = window.location.origin + window.location.pathname;
+      window.location.href = baseUrl;
     }
 
-    function updateIframeUrl() {
-      const statusEl = document.getElementById('iframeUrlStatus');
-      const valueEl = document.getElementById('iframeUrlValue');
-      if (!statusEl || !valueEl) {
-        return false;
+    function updateSdkStatus() {
+      const statusEl = document.getElementById('sdkStatus');
+      const countEl = document.getElementById('buttonCount');
+      const sampleEl = document.getElementById('sampleProviderLocation');
+      const scriptEl = document.getElementById('finderconnect-sdk');
+
+      if (!statusEl) {
+        return;
       }
 
-      const widget = document.querySelector('finderconnect');
-      const iframe = widget ? widget.querySelector('iframe') : null;
-
-      if (iframe && iframe.src) {
-        valueEl.textContent = iframe.src;
-
-        try {
-          const params = new URL(iframe.src, window.location.href).searchParams;
-          const hasAttribution = [
-            'utm_source',
-            'utm_medium',
-            'utm_campaign',
-            'utm_term',
-            'utm_content',
-            'gclid',
-            'fbclid',
-            'msclkid',
-            'twclid',
-            'ttclid',
-            'li_fat_id'
-          ].some((key) => params.get(key));
-
-          statusEl.textContent = hasAttribution
-            ? 'Attribution parameters detected in iframe URL.'
-            : 'Iframe loaded but no attribution params detected.';
-          statusEl.className = hasAttribution ? 'small text-success mb-2' : 'small text-muted mb-2';
-          valueEl.className = hasAttribution ? 'iframe-url text-success' : 'iframe-url text-muted';
-        } catch (error) {
-          statusEl.textContent = 'Iframe loaded (unable to parse URL).';
-          statusEl.className = 'small text-muted mb-2';
-          valueEl.className = 'iframe-url text-muted';
-        }
-
-        return true;
+      const buttons = document.querySelectorAll('[data-provider-location]');
+      const buttonCount = buttons.length;
+      if (countEl) {
+        countEl.textContent = buttonCount.toString();
       }
 
-      statusEl.textContent = 'Waiting for FinderConnect iframe...';
+      if (sampleEl) {
+        sampleEl.textContent = buttons[0]
+          ? buttons[0].getAttribute('data-provider-location')
+          : 'No buttons found.';
+        sampleEl.className = buttons[0] ? 'sdk-value text-success' : 'sdk-value text-muted';
+      }
+
+      if (!scriptEl) {
+        statusEl.textContent = 'finderCONNECT SDK script tag missing.';
+        statusEl.className = 'small text-danger mb-2';
+        return;
+      }
+
+      if (finderconnectScriptLoaded) {
+        statusEl.textContent = `finderCONNECT SDK loaded (${buttonCount} buttons detected).`;
+        statusEl.className = 'small text-success mb-2';
+        return;
+      }
+
+      statusEl.textContent = 'finderCONNECT SDK script tag present. Waiting for load...';
       statusEl.className = 'small text-muted mb-2';
-      valueEl.textContent = 'Loading...';
-      valueEl.className = 'iframe-url text-muted';
-      return false;
-    }
 
-    function watchIframe() {
-      let attempts = 0;
-      const maxAttempts = 30;
-      const interval = setInterval(() => {
-        attempts += 1;
-        const ready = updateIframeUrl();
-        if (ready || attempts >= maxAttempts) {
-          clearInterval(interval);
-        }
-      }, 500);
+      console.log(`Detected ${buttonCount} finderCONNECT buttons for SDK binding`);
     }
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function () {
+      const scriptEl = document.getElementById('finderconnect-sdk');
+      if (scriptEl) {
+        scriptEl.addEventListener('load', function () {
+          finderconnectScriptLoaded = true;
+          updateSdkStatus();
+        });
+        scriptEl.addEventListener('error', function () {
+          const statusEl = document.getElementById('sdkStatus');
+          if (statusEl) {
+            statusEl.textContent = 'finderCONNECT SDK failed to load.';
+            statusEl.className = 'small text-danger mb-2';
+          }
+        });
+      }
+
+      seedDemoAttributionIfEmpty();
       displayAttributionBanner();
-      watchIframe();
+      updateSdkStatus();
+
+      // Add click handler to clear attribution button
+      const clearBtn = document.getElementById('clearAttributionBtn');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', clearAttribution);
+      }
 
       // Log message about testing environment
-      console.log('🚀 Attribution Demo Environment');
-      console.log('📍 Connected to staging backend: app.dev.intelibly.com');
+      console.log('Button SDK Demo Environment');
+      console.log('Connected to staging backend: app.dev.intelibly.com');
+      console.log('Partner ID: f16d1496-6b2e-448c-8bed-75614be71d91');
       console.log('');
-      console.log('💡 Testing Steps:');
+      console.log('Testing Steps:');
       console.log('   1. Click a test campaign button to load attribution data');
-      console.log('   2. Purple banner will appear showing captured parameters');
-      console.log('   3. Search for providers (try ZIP code: 75217 or any ZIP)');
-      console.log('   4. Click "Book Now" on any provider');
-      console.log('   5. Attribution data automatically flows to booking component');
-      console.log('   6. Data is stored with booking record in staging database');
+      console.log('   2. Banner will appear showing captured parameters');
+      console.log('   3. Browse provider/location listings below');
+      console.log('   4. Click "Book Now" on any provider/location');
+      console.log('   5. finderCONNECT SDK automatically handles the booking flow');
+      console.log('   6. Attribution data is automatically captured and stored');
       console.log('');
-      console.log('📊 Supported Parameters:');
-      console.log('   • UTM: utm_source, utm_medium, utm_campaign, utm_term, utm_content');
-      console.log('   • Click IDs: gclid, fbclid, msclkid, twclid, ttclid, li_fat_id');
+      console.log('Supported Parameters:');
+      console.log('   - UTM: utm_source, utm_medium, utm_campaign, utm_term, utm_content');
+      console.log('   - Click IDs: gclid, fbclid, msclkid, twclid, ttclid, li_fat_id');
+      console.log('');
+      console.log('Note: The finderCONNECT SDK automatically captures URL parameters');
+      console.log('and passes them to the booking system. No manual handling required.');
     });
   </script>
 </body>
