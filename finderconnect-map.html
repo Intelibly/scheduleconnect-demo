@@ -601,6 +601,93 @@ https://yoursite.com/finderconnect-map.html?utm_source=newsletter&utm_medium=ema
   <!-- Template Javascript -->
   <script src="js/main.js"></script>
 
+  <!-- FinderConnect Geolocation Bridge (for iframe test page) -->
+  <script>
+    (function () {
+      const EVENT_NAME = 'finderconnect:geolocation';
+      const SOURCE = 'finderconnect-map';
+      const GEO_OPTIONS = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      };
+
+      function emit(detail) {
+        const payload = Object.assign(
+          {
+            source: SOURCE,
+            timestamp: new Date().toISOString()
+          },
+          detail
+        );
+
+        try {
+          const customEvent = new CustomEvent(EVENT_NAME, { detail: payload });
+          window.dispatchEvent(customEvent);
+          document.dispatchEvent(customEvent);
+        } catch (err) {
+          const fallbackEvent = document.createEvent('CustomEvent');
+          fallbackEvent.initCustomEvent(EVENT_NAME, false, false, payload);
+          window.dispatchEvent(fallbackEvent);
+          document.dispatchEvent(fallbackEvent);
+        }
+
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(
+            Object.assign({ type: 'geolocation' }, payload),
+            '*'
+          );
+        }
+      }
+
+      function requestGeolocation() {
+        emit({ status: 'pending', message: 'Requesting geolocation...' });
+
+        if (!navigator.geolocation) {
+          emit({ status: 'error', message: 'Geolocation not supported' });
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            emit({
+              status: 'granted',
+              latitude: position.coords.latitude.toFixed(6),
+              longitude: position.coords.longitude.toFixed(6),
+              accuracy: Math.round(position.coords.accuracy)
+            });
+          },
+          function (error) {
+            const PERMISSION_DENIED = 1;
+            const POSITION_UNAVAILABLE = 2;
+            const TIMEOUT = 3;
+
+            let message = 'Unknown error';
+            let status = 'error';
+
+            if (error && error.code === PERMISSION_DENIED) {
+              message = 'Permission denied';
+              status = 'denied';
+            } else if (error && error.code === POSITION_UNAVAILABLE) {
+              message = 'Position unavailable';
+            } else if (error && error.code === TIMEOUT) {
+              message = 'Request timed out';
+            }
+
+            emit({
+              status: status,
+              message: message,
+              code: error ? error.code : undefined
+            });
+          },
+          GEO_OPTIONS
+        );
+      }
+
+      window.addEventListener('load', requestGeolocation);
+    })();
+  </script>
+
   <!-- FinderConnect SDK - Load the actual SDK from dev server -->
   <script src="https://app.dev.intelibly.com/finderconnect.js?partner_id=f3a839d6-dd8f-4ffd-b4b8-d9a6c3614e86"></script>
 

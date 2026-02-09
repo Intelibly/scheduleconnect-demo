@@ -75,13 +75,18 @@
       color: #000;
     }
 
-    .status-success {
+    .status-granted {
       background: #28a745;
       color: white;
     }
 
-    .status-error {
+    .status-denied {
       background: #dc3545;
+      color: white;
+    }
+
+    .status-error {
+      background: #6c757d;
       color: white;
     }
 
@@ -261,12 +266,16 @@
             <div class="mb-3">
               <strong>Current Status:</strong>
               <span id="geolocation-status" class="status-badge status-pending">
-                <i class="fa fa-spinner fa-spin me-1"></i> Waiting for response...
+                <i class="fa fa-spinner fa-spin me-1"></i> Pending
               </span>
             </div>
             <div class="mb-3">
               <strong>Coordinates:</strong>
               <span id="geolocation-coords">Not available</span>
+            </div>
+            <div class="mb-3">
+              <strong>Iframe Source:</strong>
+              <span id="iframe-source">Not set</span>
             </div>
             <div>
               <strong>Console Log:</strong>
@@ -278,7 +287,7 @@
               </div>
             </div>
             <button id="test-geolocation-btn" class="btn btn-primary mt-3">
-              <i class="fa fa-location-arrow me-2"></i>Test Geolocation on This Page
+              <i class="fa fa-location-arrow me-2"></i>Test Parent Geolocation
             </button>
           </div>
         </div>
@@ -308,9 +317,10 @@
           <div class="iframe-container">
             <!-- FinderConnect Map embedded in iframe with geolocation permission -->
             <!-- The allow="geolocation" attribute is REQUIRED for geolocation to work in iframes -->
-            <!-- For local testing use localhost:3000, for production use fcm.dev.intelibly.com -->
+            <!-- Default uses the dev FinderConnect host. Override with ?iframe_src= to test other environments. -->
             <iframe id="finderconnect-iframe"
-              src="http://localhost:3000/"
+              src="about:blank"
+              data-default-src="https://fcm.dev.intelibly.com/"
               width="100%" height="700" allow="geolocation" style="border: none;"
               title="FinderConnect Map Widget with Geolocation">
             </iframe>
@@ -486,6 +496,8 @@
       const statusBadge = document.getElementById('geolocation-status');
       const coordsSpan = document.getElementById('geolocation-coords');
       const testBtn = document.getElementById('test-geolocation-btn');
+      const iframe = document.getElementById('finderconnect-iframe');
+      const iframeSourceLabel = document.getElementById('iframe-source');
 
       function getTimeString() {
         const now = new Date();
@@ -501,14 +513,48 @@
       }
 
       function updateStatus(status, message) {
-        statusBadge.className = 'status-badge status-' + status;
+        let className = 'status-error';
+        let icon = 'fa-exclamation-triangle';
+
         if (status === 'pending') {
-          statusBadge.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> ' + message;
-        } else if (status === 'success') {
-          statusBadge.innerHTML = '<i class="fa fa-check-circle me-1"></i> ' + message;
-        } else if (status === 'error') {
-          statusBadge.innerHTML = '<i class="fa fa-times-circle me-1"></i> ' + message;
+          className = 'status-pending';
+          icon = 'fa-spinner fa-spin';
+        } else if (status === 'granted') {
+          className = 'status-granted';
+          icon = 'fa-check-circle';
+        } else if (status === 'denied') {
+          className = 'status-denied';
+          icon = 'fa-ban';
         }
+
+        statusBadge.className = `status-badge ${className}`;
+        statusBadge.innerHTML = `<i class="fa ${icon} me-1"></i> ${message}`;
+      }
+
+      function resolveIframeSource() {
+        const params = new URLSearchParams(window.location.search);
+        const override =
+          params.get('iframe_src') ||
+          params.get('iframeSrc') ||
+          params.get('src');
+
+        const defaultSrc = iframe ? iframe.dataset.defaultSrc : '';
+        return override || defaultSrc || 'finderconnect-map.html';
+      }
+
+      function setIframeSource() {
+        if (!iframe) {
+          return;
+        }
+
+        const iframeSrc = resolveIframeSource();
+        iframe.src = iframeSrc;
+
+        if (iframeSourceLabel) {
+          iframeSourceLabel.textContent = iframeSrc;
+        }
+
+        addLog(`Iframe source set: ${iframeSrc}`, 'info');
       }
 
       // Test geolocation on this page (parent page)
@@ -519,8 +565,8 @@
           return;
         }
 
-        addLog('Requesting geolocation from parent page...', 'info');
-        updateStatus('pending', 'Requesting location...');
+        addLog('Parent: requesting geolocation...', 'info');
+        updateStatus('pending', 'Pending');
 
         navigator.geolocation.getCurrentPosition(
           function (position) {
@@ -528,15 +574,18 @@
             const lng = position.coords.longitude.toFixed(6);
             const accuracy = position.coords.accuracy.toFixed(0);
 
-            addLog(`Location obtained: ${lat}, ${lng} (accuracy: ${accuracy}m)`, 'success');
-            updateStatus('success', 'Location Granted');
+            addLog(`Parent granted: ${lat}, ${lng} (accuracy: ${accuracy}m)`, 'success');
+            updateStatus('granted', 'Granted');
             coordsSpan.textContent = `Lat: ${lat}, Lng: ${lng} (accuracy: ${accuracy}m)`;
           },
           function (error) {
-            let errorMessage = '';
+            let errorMessage = 'Unknown error';
+            let status = 'error';
+
             switch (error.code) {
               case error.PERMISSION_DENIED:
-                errorMessage = 'Permission denied by user';
+                errorMessage = 'Permission denied';
+                status = 'denied';
                 break;
               case error.POSITION_UNAVAILABLE:
                 errorMessage = 'Position unavailable';
@@ -544,11 +593,9 @@
               case error.TIMEOUT:
                 errorMessage = 'Request timed out';
                 break;
-              default:
-                errorMessage = 'Unknown error';
             }
-            addLog(`Geolocation error: ${errorMessage}`, 'error');
-            updateStatus('error', errorMessage);
+            addLog(`Parent ${status === 'denied' ? 'denied' : 'error'}: ${errorMessage}`, 'error');
+            updateStatus(status, status === 'denied' ? 'Denied' : errorMessage);
           },
           {
             enableHighAccuracy: true,
@@ -560,19 +607,39 @@
 
       // Listen for messages from the iframe
       window.addEventListener('message', function (event) {
-        if (event.data && event.data.type === 'geolocation') {
-          if (event.data.status === 'success') {
-            addLog(`Iframe location: ${event.data.latitude}, ${event.data.longitude}`, 'success');
-            updateStatus('success', 'Iframe Location Granted');
-            coordsSpan.textContent = `Lat: ${event.data.latitude}, Lng: ${event.data.longitude}`;
-          } else if (event.data.status === 'error') {
-            addLog(`Iframe geolocation error: ${event.data.message}`, 'error');
-            updateStatus('error', 'Iframe: ' + event.data.message);
-          }
+        if (!event.data || event.data.type !== 'geolocation') {
+          return;
         }
+
+        const originLabel = event.origin && event.origin !== 'null' ? event.origin : 'unknown origin';
+        const payload = event.data;
+
+        if (payload.status === 'pending') {
+          addLog(`Iframe pending (${originLabel})`, 'info');
+          updateStatus('pending', 'Pending');
+          return;
+        }
+
+        if (payload.status === 'granted' || payload.status === 'success') {
+          const accuracyLabel = payload.accuracy ? ` (accuracy: ${payload.accuracy}m)` : '';
+          addLog(`Iframe granted: ${payload.latitude}, ${payload.longitude}${accuracyLabel} (${originLabel})`, 'success');
+          updateStatus('granted', 'Granted');
+          coordsSpan.textContent = `Lat: ${payload.latitude}, Lng: ${payload.longitude}${accuracyLabel}`;
+          return;
+        }
+
+        if (payload.status === 'denied') {
+          addLog(`Iframe denied: ${payload.message || 'Permission denied'} (${originLabel})`, 'error');
+          updateStatus('denied', 'Denied');
+          return;
+        }
+
+        addLog(`Iframe error: ${payload.message || 'Unknown error'} (${originLabel})`, 'error');
+        updateStatus('error', payload.message || 'Error');
       });
 
       // Initial log
+      setIframeSource();
       addLog('Page loaded. Iframe geolocation test ready.', 'info');
       addLog('The iframe will automatically request location when loaded.', 'info');
     })();
