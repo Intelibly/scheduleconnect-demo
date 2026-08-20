@@ -89,6 +89,21 @@
       font-size: 0.9rem;
       margin: 0.5rem 0.5rem 0.5rem 0;
     }
+
+    .booking-entry-form {
+      background: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .booking-entry-url {
+      word-break: break-all;
+    }
+
+    .booking-preset-buttons .btn {
+      margin: 0 0.5rem 0.5rem 0;
+    }
   </style>
 </head>
 
@@ -457,6 +472,84 @@
   </div>
   <!-- Widget Demo Section End -->
 
+  <!-- Provider Location Booking Entry Point Test Start -->
+  <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.4s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="documentation-section">
+            <h3><i class="fa fa-calendar-check text-primary me-2"></i>Provider-Location Booking Entry Point</h3>
+            <p>
+              Test the <code>/booking</code> URL flow that resolves a partner-scoped
+              <code>provider_location_id</code> before opening provider-location or location-level booking.
+            </p>
+
+            <div class="booking-entry-form mt-4">
+              <div class="row g-3 align-items-end">
+                <div class="col-lg-3 col-md-6">
+                  <label for="bookingEnvironment" class="form-label">Environment</label>
+                  <select id="bookingEnvironment" class="form-select">
+                    <option value="https://app.dev.intelibly.com" selected>Development</option>
+                    <option value="https://app.staging.intelibly.com">Staging</option>
+                    <option value="https://app.intelibly.com">Production</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label for="bookingHost" class="form-label">Booking Host</label>
+                  <input id="bookingHost" class="form-control" type="url" value="https://app.dev.intelibly.com" />
+                </div>
+                <div class="col-lg-2 col-md-6">
+                  <label for="bookingPartnerId" class="form-label">Partner ID</label>
+                  <input id="bookingPartnerId" class="form-control" type="text" value="Ameritas" />
+                </div>
+                <div class="col-lg-2 col-md-6">
+                  <label for="bookingProviderLocationId" class="form-label">Provider Location ID</label>
+                  <input id="bookingProviderLocationId" class="form-control" type="text" value="ABC123" />
+                </div>
+                <div class="col-lg-2">
+                  <a id="bookingEntryLink" class="btn btn-primary w-100" target="_blank" rel="noopener">
+                    <i class="fa fa-external-link-alt me-2"></i>Open
+                  </a>
+                </div>
+              </div>
+
+              <div class="alert alert-info mt-4 mb-0">
+                <div class="small text-muted mb-1">Generated URL</div>
+                <code id="bookingEntryUrl" class="booking-entry-url"></code>
+              </div>
+            </div>
+
+            <div class="booking-preset-buttons mt-4">
+              <button class="btn btn-outline-primary" type="button" data-booking-preset="provider">
+                <i class="fa fa-user-md me-2"></i>Provider Mapping
+              </button>
+              <button class="btn btn-outline-primary" type="button" data-booking-preset="location">
+                <i class="fa fa-map-marker-alt me-2"></i>Location Only
+              </button>
+              <button class="btn btn-outline-secondary" type="button" data-booking-preset="not-found">
+                <i class="fa fa-search me-2"></i>Mapping Not Found
+              </button>
+              <button class="btn btn-outline-secondary" type="button" data-booking-preset="invalid-partner">
+                <i class="fa fa-exclamation-triangle me-2"></i>Invalid Partner
+              </button>
+              <button class="btn btn-outline-secondary" type="button" data-booking-preset="backend-error">
+                <i class="fa fa-bug me-2"></i>Backend Error
+              </button>
+            </div>
+
+            <p class="text-muted small mt-3 mb-0">
+              Default scenario:
+              <code>/booking?provider_location_id=ABC123&amp;partner_id=Ameritas</code>.
+              Replace the preset IDs with the mapped values configured in the selected test environment.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Provider Location Booking Entry Point Test End -->
+
   <!-- Example URL Parameters Section Start -->
   <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.5s">
     <div class="container">
@@ -600,6 +693,85 @@ https://yoursite.com/finderconnect-map.html?utm_source=newsletter&utm_medium=ema
 
   <!-- Template Javascript -->
   <script src="js/main.js"></script>
+
+  <script>
+    (function () {
+      const bookingPresets = {
+        provider: {
+          partnerId: 'Ameritas',
+          providerLocationId: 'ABC123'
+        },
+        location: {
+          partnerId: 'Ameritas',
+          providerLocationId: 'LOCATION-ONLY-123'
+        },
+        'not-found': {
+          partnerId: 'Ameritas',
+          providerLocationId: 'NOT-MAPPED-123'
+        },
+        'invalid-partner': {
+          partnerId: 'InvalidPartner',
+          providerLocationId: 'ABC123'
+        },
+        'backend-error': {
+          partnerId: 'Ameritas',
+          providerLocationId: 'BACKEND-ERROR-123'
+        }
+      };
+
+      const environmentSelect = document.getElementById('bookingEnvironment');
+      const hostInput = document.getElementById('bookingHost');
+      const partnerInput = document.getElementById('bookingPartnerId');
+      const providerLocationInput = document.getElementById('bookingProviderLocationId');
+      const bookingLink = document.getElementById('bookingEntryLink');
+      const bookingUrlOutput = document.getElementById('bookingEntryUrl');
+
+      function bookingUrl(providerLocationId, partnerId) {
+        const bookingHost = hostInput.value.trim().replace(/\/+$/, '') || 'https://app.dev.intelibly.com';
+        const params = new URLSearchParams({
+          provider_location_id: providerLocationId,
+          partner_id: partnerId
+        });
+
+        return `${bookingHost}/booking?${params.toString()}`;
+      }
+
+      function updateBookingLinks() {
+        const partnerId = partnerInput.value.trim() || 'Ameritas';
+        const providerLocationId = providerLocationInput.value.trim() || 'ABC123';
+        const url = bookingUrl(providerLocationId, partnerId);
+
+        bookingLink.href = url;
+        bookingUrlOutput.textContent = url;
+      }
+
+      environmentSelect.addEventListener('change', function () {
+        if (environmentSelect.value !== 'custom') {
+          hostInput.value = environmentSelect.value;
+        }
+
+        updateBookingLinks();
+      });
+      hostInput.addEventListener('input', function () {
+        environmentSelect.value = 'custom';
+        updateBookingLinks();
+      });
+      partnerInput.addEventListener('input', updateBookingLinks);
+      providerLocationInput.addEventListener('input', updateBookingLinks);
+
+      document.querySelectorAll('[data-booking-preset]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          const preset = bookingPresets[button.getAttribute('data-booking-preset')];
+
+          partnerInput.value = preset.partnerId;
+          providerLocationInput.value = preset.providerLocationId;
+          updateBookingLinks();
+        });
+      });
+
+      updateBookingLinks();
+    })();
+  </script>
 
   <!-- FinderConnect SDK - Load the actual SDK from dev server -->
   <script src="https://app.dev.intelibly.com/finderconnect.js?partner_id=f3a839d6-dd8f-4ffd-b4b8-d9a6c3614e86"></script>
