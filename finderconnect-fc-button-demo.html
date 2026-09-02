@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>FinderConnect Button SDK</title>
+  <title>FinderConnect fc-button SDK</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <meta content="Attribution demo for Intelibly finderCONNECT Button SDK using data-provider-location buttons"
+  <meta content="Attribution demo for Intelibly finderCONNECT fc-button custom element using data-location-internal-id and data-provider-internal-id"
     name="description" />
 
   <!-- Favicon -->
@@ -126,6 +126,11 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
+      min-height: 40px;
+    }
+
+    fc-button {
+      display: inline-block;
     }
 
     @media (min-width: 768px) {
@@ -234,8 +239,8 @@
           <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">FinderConnect</a>
           <div class="dropdown-menu m-0">
             <a href="finderconnect-map.html" class="dropdown-item">Map Widget</a>
-            <a href="finderconnect-button-demo.html" class="dropdown-item active">Button SDK</a>
-            <a href="finderconnect-fc-button-demo.html" class="dropdown-item">fc-button SDK</a>
+            <a href="finderconnect-button-demo.html" class="dropdown-item">Button SDK</a>
+            <a href="finderconnect-fc-button-demo.html" class="dropdown-item active">fc-button SDK</a>
             <a href="iframe-geolocation-test.html" class="dropdown-item">Iframe Geolocation Test</a>
           </div>
         </div>
@@ -283,12 +288,12 @@
     <div class="row py-3">
       <div class="col-12 text-center">
         <h1 class="display-3 text-white animated zoomIn">
-          <i class="fa fa-flask me-3"></i>FinderConnect Button SDK
+          <i class="fa fa-flask me-3"></i>FinderConnect fc-button SDK
         </h1>
-        <p class="text-white mb-4 animated zoomIn">Test marketing attribution flow with the finderCONNECT Button SDK</p>
+        <p class="text-white mb-4 animated zoomIn">Test marketing attribution flow with the finderCONNECT fc-button custom element</p>
         <a href="index.html" class="h4 text-white">Home</a>
         <i class="far fa-circle text-white px-2"></i>
-        <a href="#" class="h4 text-white">Button SDK</a>
+        <a href="#" class="h4 text-white">fc-button SDK</a>
       </div>
     </div>
   </div>
@@ -311,10 +316,10 @@
     <div class="sdk-debug">
       <h5 class="mb-2"><i class="fa fa-link text-primary me-2"></i>finderCONNECT SDK Status</h5>
       <div id="sdkStatus" class="small text-muted mb-2">Checking SDK status...</div>
-      <div class="small text-muted mb-2">Provider/location buttons detected: <span id="buttonCount">0</span></div>
+      <div class="small text-muted mb-2">fc-button elements detected: <span id="buttonCount">0</span></div>
       <div class="small text-muted">SDK Partner ID</div>
-      <div class="sdk-value text-primary">f16d1496-6b2e-448c-8bed-75614be71d91</div>
-      <div class="small text-muted mt-2">Sample Provider/Location ID</div>
+      <div class="sdk-value text-primary">6595a1b6-07ba-485a-8d48-6b793a3ddf07</div>
+      <div class="small text-muted mt-2">Sample Location / Provider IDs</div>
       <div id="sampleProviderLocation" class="sdk-value text-muted">Waiting for SDK...</div>
     </div>
 
@@ -359,9 +364,10 @@
           Campaign")</li>
         <li><strong>Verify Capture:</strong> The banner will appear showing captured attribution parameters</li>
         <li><strong>Browse Provider/Locations:</strong> Review the provider/location listings below</li>
-        <li><strong>Book Appointment:</strong> Click "Book Now" on any provider/location</li>
-        <li><strong>Verify Flow:</strong> Check browser console (F12) to confirm the SDK loads and detects buttons with
-          <code>data-provider-location</code> attributes
+        <li><strong>Book Appointment:</strong> Click the rendered fc-button on any provider/location</li>
+        <li><strong>Verify Flow:</strong> Check browser console (F12) to confirm the SDK loads and detects
+          <code>fc-button</code> elements with
+          <code>data-location-internal-id</code> and <code>data-provider-internal-id</code> attributes
         </li>
         <li><strong>Backend Verification:</strong> Attribution data is automatically saved with the booking record in
           the database</li>
@@ -371,82 +377,326 @@
     <!-- finderCONNECT Button Listings -->
     <div class="widget-container">
       <h3 class="mb-4">
-        <i class="fa fa-hand-point-right text-primary me-2"></i>Provider/Location Listings with finderCONNECT Button
+        <i class="fa fa-hand-point-right text-primary me-2"></i>Provider/Location Listings with finderCONNECT fc-button
         <span class="status-badge status-pending">Live Demo</span>
       </h3>
       <p class="mb-4">
-        Each listing includes a "Book Now" button with <code>data-provider-location="provider_id:location_id"</code>
-        attribute.
-        The finderCONNECT SDK automatically detects these buttons and handles the booking flow with attribution data.
+        Each listing includes an <code>&lt;fc-button&gt;</code> custom element with separate
+        <code>data-location-internal-id</code> and <code>data-provider-internal-id</code> attributes.
+        The finderCONNECT SDK upgrades these elements and handles the booking flow with attribution data.
       </p>
       <div class="alert alert-success mb-3">
         <i class="fa fa-check-circle me-2"></i>
         <strong>Live Configuration:</strong> Using partner internal IDs from staging. The finderCONNECT SDK will
-        handle button clicks automatically.
+        render buttons for claimed provider/locations with a booking experience.
       </div>
 
       <div class="location-list">
         <div class="location-row">
           <div class="location-address">
-            <div class="location-title">1205 W MCDERMOTT DR STE 120</div>
-            <div>ALLEN, TX 75013</div>
+            <div class="location-title">Location 000524950</div>
+            <div>Internal location ID: <code>000524950</code></div>
+            <div>Internal provider ID: <code>000524946</code></div>
           </div>
           <div class="location-actions">
-            <button type="button" class="btn btn-primary px-4" data-provider-location="36031137:9656713">
-              Book Now
-            </button>
+            <fc-button data-location-internal-id="000524950" data-provider-internal-id="000524946"></fc-button>
           </div>
         </div>
         <div class="location-row">
           <div class="location-address">
-            <div class="location-title">4150 Belt Line Rd</div>
-            <div>Addison, Texas 75001-4354</div>
-            <div>United States of America</div>
+            <div class="location-title">Location 000524946</div>
+            <div>Internal location ID: <code>000524946</code></div>
+            <div>Internal provider ID: <code>001694416</code></div>
           </div>
           <div class="location-actions">
-            <button type="button" class="btn btn-primary px-4" data-provider-location="16956789:34030988">
-              Book Now
-            </button>
+            <fc-button data-location-internal-id="000524946" data-provider-internal-id="001694416"></fc-button>
           </div>
         </div>
         <div class="location-row">
           <div class="location-address">
-            <div class="location-title">4562 I-10</div>
-            <div>San Antonio, Texas 78219-4205</div>
-            <div>United States of America</div>
+            <div class="location-title">Location 001572381</div>
+            <div>Internal location ID: <code>001572381</code></div>
+            <div>Internal provider ID: <code>000524920</code></div>
           </div>
           <div class="location-actions">
-            <button type="button" class="btn btn-primary px-4" data-provider-location="31243990:49827621">
-              Book Now
-            </button>
+            <fc-button data-location-internal-id="001572381" data-provider-internal-id="000524920"></fc-button>
           </div>
         </div>
         <div class="location-row">
           <div class="location-address">
-            <div class="location-title">1144 SW 104th</div>
-            <div>OKLAHOMA CITY, OK 73139</div>
+            <div class="location-title">Location 001572379</div>
+            <div>Internal location ID: <code>001572379</code></div>
+            <div>Internal provider ID: <code>000989025</code></div>
           </div>
           <div class="location-actions">
-            <button type="button" class="btn btn-primary px-4" data-provider-location="39991578:8152153">
-              Book Now
-            </button>
+            <fc-button data-location-internal-id="001572379" data-provider-internal-id="000989025"></fc-button>
           </div>
         </div>
         <div class="location-row">
           <div class="location-address">
-            <div class="location-title">456 Sesame Street</div>
-            <div>San Antonio, TX 78213</div>
-            <div>United States of America</div>
+            <div class="location-title">Location 001572383</div>
+            <div>Internal location ID: <code>001572383</code></div>
+            <div>Internal provider ID: <code>001572374</code></div>
           </div>
           <div class="location-actions">
-            <button type="button" class="btn btn-primary px-4" data-provider-location="34643360:47594953">
-              Book Now
-            </button>
+            <fc-button data-location-internal-id="001572383" data-provider-internal-id="001572374"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572387</div>
+            <div>Internal location ID: <code>001572387</code></div>
+            <div>Internal provider ID: <code>001984143</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572387" data-provider-internal-id="001984143"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572385</div>
+            <div>Internal location ID: <code>001572385</code></div>
+            <div>Internal provider ID: <code>000330903</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572385" data-provider-internal-id="000330903"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572386</div>
+            <div>Internal location ID: <code>001572386</code></div>
+            <div>Internal provider ID: <code>002162074</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572386" data-provider-internal-id="002162074"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000524947</div>
+            <div>Internal location ID: <code>000524947</code></div>
+            <div>Internal provider ID: <code>001922470</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000524947" data-provider-internal-id="001922470"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000152727</div>
+            <div>Internal location ID: <code>000152727</code></div>
+            <div>Internal provider ID: <code>000991189</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000152727" data-provider-internal-id="000991189"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572378</div>
+            <div>Internal location ID: <code>001572378</code></div>
+            <div>Internal provider ID: <code>001692147</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572378" data-provider-internal-id="001692147"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572382</div>
+            <div>Internal location ID: <code>001572382</code></div>
+            <div>Internal provider ID: <code>001763593</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572382" data-provider-internal-id="001763593"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000338473</div>
+            <div>Internal location ID: <code>000338473</code></div>
+            <div>Internal provider ID: <code>002312659</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000338473" data-provider-internal-id="002312659"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000330907</div>
+            <div>Internal location ID: <code>000330907</code></div>
+            <div>Internal provider ID: <code>001731983</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000330907" data-provider-internal-id="001731983"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000918669</div>
+            <div>Internal location ID: <code>000918669</code></div>
+            <div>Internal provider ID: <code>000338473</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000918669" data-provider-internal-id="000338473"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000338476</div>
+            <div>Internal location ID: <code>000338476</code></div>
+            <div>Internal provider ID: <code>001080019</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000338476" data-provider-internal-id="001080019"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572380</div>
+            <div>Internal location ID: <code>001572380</code></div>
+            <div>Internal provider ID: <code>001963105</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572380" data-provider-internal-id="001963105"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572376</div>
+            <div>Internal location ID: <code>001572376</code></div>
+            <div>Internal provider ID: <code>002070391</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572376" data-provider-internal-id="002070391"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572375</div>
+            <div>Internal location ID: <code>001572375</code></div>
+            <div>Internal provider ID: <code>002073847</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572375" data-provider-internal-id="002073847"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000330906</div>
+            <div>Internal location ID: <code>000330906</code></div>
+            <div>Internal provider ID: <code>000524939</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000330906" data-provider-internal-id="000524939"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000330904</div>
+            <div>Internal location ID: <code>000330904</code></div>
+            <div>Internal provider ID: <code>000152727</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000330904" data-provider-internal-id="000152727"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572377</div>
+            <div>Internal location ID: <code>001572377</code></div>
+            <div>Internal provider ID: <code>002069511</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572377" data-provider-internal-id="002069511"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000330908</div>
+            <div>Internal location ID: <code>000330908</code></div>
+            <div>Internal provider ID: <code>002227736</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000330908" data-provider-internal-id="002227736"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000524949</div>
+            <div>Internal location ID: <code>000524949</code></div>
+            <div>Internal provider ID: <code>002314868</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000524949" data-provider-internal-id="002314868"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000330903</div>
+            <div>Internal location ID: <code>000330903</code></div>
+            <div>Internal provider ID: <code>001599374</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000330903" data-provider-internal-id="001599374"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000330905</div>
+            <div>Internal location ID: <code>000330905</code></div>
+            <div>Internal provider ID: <code>002107074</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000330905" data-provider-internal-id="002107074"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000524948</div>
+            <div>Internal location ID: <code>000524948</code></div>
+            <div>Internal provider ID: <code>002318018</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000524948" data-provider-internal-id="002318018"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572384</div>
+            <div>Internal location ID: <code>001572384</code></div>
+            <div>Internal provider ID: <code>000524825</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572384" data-provider-internal-id="000524825"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 000647610</div>
+            <div>Internal location ID: <code>000647610</code></div>
+            <div>Internal provider ID: <code>000647610</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="000647610" data-provider-internal-id="000647610"></fc-button>
+          </div>
+        </div>
+        <div class="location-row">
+          <div class="location-address">
+            <div class="location-title">Location 001572374</div>
+            <div>Internal location ID: <code>001572374</code></div>
+            <div>Internal provider ID: <code>000524836</code></div>
+          </div>
+          <div class="location-actions">
+            <fc-button data-location-internal-id="001572374" data-provider-internal-id="000524836"></fc-button>
           </div>
         </div>
       </div>
       <p class="text-muted small mt-3 mb-0">
-        Buttons use <code>provider_internal_id:location_internal_id</code> from partner mappings.
+        Buttons use separate <code>data-location-internal-id</code> and <code>data-provider-internal-id</code>
+        attributes instead of a combined <code>data-provider-location</code> value.
+        Unclaimed mappings stay hidden by the custom element.
       </p>
     </div>
 
@@ -463,11 +713,11 @@
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Attribution data capture (UTM params,
                 click IDs)</li>
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>finderCONNECT button binding via
-                <code>data-provider-location</code>
+                <code>&lt;fc-button&gt;</code>
               </li>
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Provider and location identification
-                using
-                <code>provider_id:location_id</code> format
+                using separate
+                <code>data-location-internal-id</code> and <code>data-provider-internal-id</code> attributes
               </li>
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Automatic SDK handling of booking flow
               </li>
@@ -532,7 +782,7 @@
     <div class="container">
       <div class="row g-0">
         <div class="col-md-6 text-center text-md-start">
-          <p class="mb-md-0">&copy; <a class="text-white border-bottom" href="#">Button SDK</a>. All Rights
+          <p class="mb-md-0">&copy; <a class="text-white border-bottom" href="#">fc-button SDK</a>. All Rights
             Reserved.</p>
         </div>
         <div class="col-md-6 text-center text-md-end">
@@ -555,7 +805,7 @@
 
   <!-- finderCONNECT Button SDK (staging) -->
   <script id="finderconnect-sdk" type="module"
-    src="https://app.dev.intelibly.com/partners/f16d1496-6b2e-448c-8bed-75614be71d91/sdk.js"></script>
+    src="https://app.dev.intelibly.com/partners/6595a1b6-07ba-485a-8d48-6b793a3ddf07/sdk.js"></script>
 
   <!-- Attribution Tracking JavaScript -->
   <script>
@@ -587,7 +837,7 @@
       utm_source: 'demo',
       utm_medium: 'website',
       utm_campaign: 'attribution-demo',
-      utm_content: 'select-button',
+      utm_content: 'fc-button',
       gclid: 'demo_gclid_123'
     };
 
@@ -633,7 +883,7 @@
         for (const [key, value] of Object.entries(attribution)) {
           consoleHTML += `<div class="ms-3">- ${key}: "${value}"</div>`;
         }
-        consoleHTML += '<div class="mt-2">Ready to pass to finderCONNECT Button bookings</div>';
+        consoleHTML += '<div class="mt-2">Ready to pass to finderCONNECT fc-button bookings</div>';
         consoleOutput.innerHTML = consoleHTML;
 
         // Show the banner
@@ -682,6 +932,19 @@
       window.location.href = baseUrl;
     }
 
+    function getFcButtons() {
+      return document.querySelectorAll('fc-button');
+    }
+
+    function describeFcButton(button) {
+      const locationId = button.getAttribute('data-location-internal-id');
+      const providerId = button.getAttribute('data-provider-internal-id');
+      if (!locationId && !providerId) {
+        return 'No location/provider attributes found.';
+      }
+      return `location ${locationId || 'n/a'} / provider ${providerId || 'n/a'}`;
+    }
+
     function updateSdkStatus() {
       const statusEl = document.getElementById('sdkStatus');
       const countEl = document.getElementById('buttonCount');
@@ -692,7 +955,7 @@
         return;
       }
 
-      const buttons = document.querySelectorAll('[data-provider-location]');
+      const buttons = getFcButtons();
       const buttonCount = buttons.length;
       if (countEl) {
         countEl.textContent = buttonCount.toString();
@@ -700,8 +963,8 @@
 
       if (sampleEl) {
         sampleEl.textContent = buttons[0]
-          ? buttons[0].getAttribute('data-provider-location')
-          : 'No buttons found.';
+          ? describeFcButton(buttons[0])
+          : 'No fc-button elements found.';
         sampleEl.className = buttons[0] ? 'sdk-value text-success' : 'sdk-value text-muted';
       }
 
@@ -712,7 +975,7 @@
       }
 
       if (finderconnectScriptLoaded) {
-        statusEl.textContent = `finderCONNECT SDK loaded (${buttonCount} buttons detected).`;
+        statusEl.textContent = `finderCONNECT SDK loaded (${buttonCount} fc-button elements detected).`;
         statusEl.className = 'small text-success mb-2';
         return;
       }
@@ -720,7 +983,7 @@
       statusEl.textContent = 'finderCONNECT SDK script tag present. Waiting for load...';
       statusEl.className = 'small text-muted mb-2';
 
-      console.log(`Detected ${buttonCount} finderCONNECT buttons for SDK binding`);
+      console.log(`Detected ${buttonCount} finderCONNECT fc-button elements for SDK binding`);
     }
 
     // Initialize on page load
@@ -751,15 +1014,15 @@
       }
 
       // Log message about testing environment
-      console.log('Button SDK Demo Environment');
+      console.log('fc-button SDK Demo Environment');
       console.log('Connected to staging backend: app.dev.intelibly.com');
-      console.log('Partner ID: f16d1496-6b2e-448c-8bed-75614be71d91');
+      console.log('Partner ID: 6595a1b6-07ba-485a-8d48-6b793a3ddf07');
       console.log('');
       console.log('Testing Steps:');
       console.log('   1. Click a test campaign button to load attribution data');
       console.log('   2. Banner will appear showing captured parameters');
       console.log('   3. Browse provider/location listings below');
-      console.log('   4. Click "Book Now" on any provider/location');
+      console.log('   4. Click a rendered fc-button on any provider/location');
       console.log('   5. finderCONNECT SDK automatically handles the booking flow');
       console.log('   6. Attribution data is automatically captured and stored');
       console.log('');
