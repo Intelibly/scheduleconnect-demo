@@ -145,6 +145,82 @@
       }
     }
 
+    .style-test-box {
+      background: #ffffff;
+      border: 2px solid #06A3DA;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .style-test-case {
+      border: 1px solid #e3e6f0;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .style-test-case:last-child {
+      margin-bottom: 0;
+    }
+
+    .style-test-case pre {
+      background: #f8f9fa;
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-size: 0.8rem;
+      margin: 0.75rem 0 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .style-test-target {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      min-height: 48px;
+    }
+
+    .style-report {
+      width: 100%;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .style-report th,
+    .style-report td {
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid #e3e6f0;
+      vertical-align: top;
+    }
+
+    .style-report th {
+      background: #f8f9fa;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .style-report td {
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+
+    .verdict-applied {
+      color: #155724;
+      font-weight: 600;
+    }
+
+    .verdict-ignored {
+      color: #721c24;
+      font-weight: 600;
+    }
+
+    .verdict-partial {
+      color: #8a6d3b;
+      font-weight: 600;
+    }
+
     .instructions-box h5 {
       color: #06A3DA;
       margin-bottom: 1rem;
@@ -371,7 +447,198 @@
         </li>
         <li><strong>Backend Verification:</strong> Attribution data is automatically saved with the booking record in
           the database</li>
+        <li><strong>Style Overrides:</strong> Review the Style Override Testing section below and check the measured
+          results table for which override mechanism actually reaches the rendered button</li>
       </ol>
+    </div>
+
+    <!-- Style Override Testing -->
+    <div class="style-test-box">
+      <h4><i class="fa fa-paint-brush text-primary me-2"></i>Style Override Testing</h4>
+      <p class="mb-2">
+        <code>&lt;fc-button&gt;</code> renders its <code>&lt;button&gt;</code> inside a shadow root, so the two
+        candidate override mechanisms behave very differently. Each case below is measured automatically against the
+        real rendered button, and the verdict table at the bottom reports what actually took effect.
+      </p>
+      <div class="alert alert-warning mb-4">
+        <i class="fa fa-exclamation-triangle me-2"></i>
+        <strong>Heads up:</strong> the inline <code>style</code> attribute is the documented approach for the
+        <code>&lt;finderconnect&gt;</code> map element, but <code>&lt;fc-button&gt;</code> reads its styles from a
+        child <code>&lt;style&gt;</code> element instead. Cases A and B test both so the deployed page proves which
+        one works.
+      </div>
+
+      <!-- Control -->
+      <div class="style-test-case">
+        <h6 class="text-uppercase text-muted mb-1">Control &mdash; no overrides</h6>
+        <p class="small text-muted mb-2">Baseline default appearance to compare every other case against.</p>
+        <div class="style-test-target">
+          <fc-button id="fcStyleControl" data-location-internal-id="000524946"
+            data-provider-internal-id="000524946"></fc-button>
+        </div>
+      </div>
+
+      <!-- Case A1 -->
+      <div class="style-test-case">
+        <h6 class="text-uppercase text-muted mb-1">Case A1 &mdash; inline <code>style</code> attribute (non-inherited
+          properties)</h6>
+        <p class="small text-muted mb-2">
+          Sets background, border, radius and padding directly on the host element.
+        </p>
+        <div class="style-test-target">
+          <fc-button id="fcStyleInlineBox" data-location-internal-id="000152727"
+            data-provider-internal-id="000152727"
+            style="background: #e8590c; border: 2px dashed #862e9c; border-radius: 999px; padding: 14px 28px;"></fc-button>
+        </div>
+        <pre>&lt;fc-button style="background: #e8590c; border: 2px dashed #862e9c;
+            border-radius: 999px; padding: 14px 28px;"&gt;&lt;/fc-button&gt;</pre>
+      </div>
+
+      <!-- Case A2 -->
+      <div class="style-test-case">
+        <h6 class="text-uppercase text-muted mb-1">Case A2 &mdash; inline <code>style</code> attribute (inherited
+          properties)</h6>
+        <p class="small text-muted mb-2">
+          Sets <code>font-family</code> and <code>color</code> on the host. Inherited properties can cross the shadow
+          boundary, but only where the inner button does not set them itself.
+        </p>
+        <div class="style-test-target">
+          <fc-button id="fcStyleInlineInherit" data-location-internal-id="000330903"
+            data-provider-internal-id="000330903"
+            style="font-family: Georgia, serif; color: #c92a2a; font-size: 20px;"></fc-button>
+        </div>
+        <pre>&lt;fc-button style="font-family: Georgia, serif; color: #c92a2a; font-size: 20px;"&gt;&lt;/fc-button&gt;</pre>
+      </div>
+
+      <!-- Case B1 -->
+      <div class="style-test-case">
+        <h6 class="text-uppercase text-muted mb-1">Case B1 &mdash; child <code>&lt;style&gt;</code> element (full
+          restyle)</h6>
+        <p class="small text-muted mb-2">
+          The child <code>&lt;style&gt;</code> replaces the component's entire default stylesheet, so it must declare
+          every property it needs.
+        </p>
+        <div class="style-test-target">
+          <fc-button id="fcStyleChildFull" data-location-internal-id="000330904"
+            data-provider-internal-id="002069511">
+            <style>
+              button {
+                appearance: none;
+                background: #2b8a3e;
+                border: 0;
+                border-radius: 999px;
+                color: #ffffff;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 16px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                min-height: 48px;
+                padding: 12px 32px;
+                text-transform: uppercase;
+              }
+            </style>
+          </fc-button>
+        </div>
+        <pre>&lt;fc-button ...&gt;
+  &lt;style&gt;
+    button { background: #2b8a3e; border-radius: 999px; text-transform: uppercase; ... }
+  &lt;/style&gt;
+&lt;/fc-button&gt;</pre>
+      </div>
+
+      <!-- Case B2 -->
+      <div class="style-test-case">
+        <h6 class="text-uppercase text-muted mb-1">Case B2 &mdash; child <code>&lt;style&gt;</code> element (outline
+          variant with states)</h6>
+        <p class="small text-muted mb-2">
+          Confirms that pseudo-class rules such as <code>:hover</code> and <code>:focus-visible</code> also survive
+          inside the shadow root. Hover the button to check the transition.
+        </p>
+        <div class="style-test-target">
+          <fc-button id="fcStyleChildOutline" data-location-internal-id="000338473"
+            data-provider-internal-id="000338473">
+            <style>
+              button {
+                appearance: none;
+                background: transparent;
+                border: 2px solid #1b75bb;
+                border-radius: 4px;
+                color: #1b75bb;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 600;
+                min-height: 40px;
+                padding: 10px 18px;
+                transition: background 0.2s ease, color 0.2s ease;
+              }
+
+              button:hover {
+                background: #1b75bb;
+                color: #ffffff;
+              }
+
+              button:focus-visible {
+                outline: 3px solid #f59f00;
+                outline-offset: 2px;
+              }
+            </style>
+          </fc-button>
+        </div>
+        <pre>&lt;fc-button ...&gt;
+  &lt;style&gt;
+    button { background: transparent; border: 2px solid #1b75bb; color: #1b75bb; ... }
+    button:hover { background: #1b75bb; color: #ffffff; }
+    button:focus-visible { outline: 3px solid #f59f00; }
+  &lt;/style&gt;
+&lt;/fc-button&gt;</pre>
+      </div>
+
+      <!-- Leak canary -->
+      <div class="style-test-case">
+        <h6 class="text-uppercase text-muted mb-1">Style leak canary</h6>
+        <p class="small text-muted mb-2">
+          The child <code>&lt;style&gt;</code> elements stay in the light DOM, so they also remain live document
+          stylesheets. Their bare <code>button</code> selector can therefore match ordinary page buttons too. This
+          check measures a freshly created unstyled <code>&lt;button&gt;</code>, which keeps the result independent of
+          Bootstrap's own <code>.btn</code> rules.
+        </p>
+        <div class="style-test-target">
+          <button id="leakCanaryButton" type="button" class="btn btn-secondary">Ordinary page button</button>
+          <span id="leakCanaryVerdict" class="small text-muted">Checking...</span>
+        </div>
+      </div>
+
+      <!-- Measured results -->
+      <h5 class="mt-4 mb-2"><i class="fa fa-vial text-primary me-2"></i>Measured Results</h5>
+      <p class="small text-muted mb-2">
+        Computed styles read directly from the <code>&lt;button&gt;</code> inside each element's shadow root, compared
+        against the control.
+      </p>
+      <div class="table-responsive">
+        <table class="style-report">
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>Mechanism</th>
+              <th>Background</th>
+              <th>Text color</th>
+              <th>Border radius</th>
+              <th>Font</th>
+              <th>Verdict</th>
+            </tr>
+          </thead>
+          <tbody id="styleReportBody">
+            <tr>
+              <td colspan="7" class="text-muted">Waiting for the finderCONNECT SDK to render the buttons...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button id="rerunStyleReport" type="button" class="btn btn-outline-primary btn-sm mt-3">
+        <i class="fa fa-sync me-2"></i>Re-run measurement
+      </button>
     </div>
 
     <!-- finderCONNECT Button Listings -->
@@ -741,6 +1008,12 @@
               </li>
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Automatic SDK handling of booking flow
               </li>
+              <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Style overrides via the inline
+                <code>style</code> attribute versus a child <code>&lt;style&gt;</code> element
+              </li>
+              <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Whether override styles leak out of
+                the shadow root into the host page
+              </li>
               <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Backend storage (staging database)
               </li>
             </ul>
@@ -1006,6 +1279,200 @@
       console.log(`Detected ${buttonCount} finderCONNECT fc-button elements for SDK binding`);
     }
 
+    // Style override test cases, in report order. `expects` lists the properties each
+    // override attempts to change, so a partial result can be told apart from a full one.
+    const styleTestCases = [
+      {
+        id: 'fcStyleControl',
+        label: 'Control',
+        mechanism: 'None (defaults)',
+        expects: []
+      },
+      {
+        id: 'fcStyleInlineBox',
+        label: 'A1',
+        mechanism: 'Inline style attribute',
+        expects: ['background', 'border', 'borderRadius', 'padding']
+      },
+      {
+        id: 'fcStyleInlineInherit',
+        label: 'A2',
+        mechanism: 'Inline style attribute',
+        expects: ['fontFamily', 'color', 'fontSize']
+      },
+      {
+        id: 'fcStyleChildFull',
+        label: 'B1',
+        mechanism: 'Child <style> element',
+        expects: ['background', 'borderRadius', 'fontSize', 'fontWeight', 'textTransform', 'padding']
+      },
+      {
+        id: 'fcStyleChildOutline',
+        label: 'B2',
+        mechanism: 'Child <style> element',
+        expects: ['background', 'color', 'border']
+      }
+    ];
+
+    // Mechanism labels contain tag names, so they must be escaped before going into HTML.
+    function escapeHtml(value) {
+      return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // Reads the computed style of the <button> inside an fc-button's shadow root.
+    function measureShadowButton(hostId) {
+      const host = document.getElementById(hostId);
+      if (!host) {
+        return { state: 'missing' };
+      }
+      const button = host.shadowRoot && host.shadowRoot.querySelector('button');
+      if (!button) {
+        // fc-button sets hidden in connectedCallback and only renders once its status
+        // request resolves, so an absent button is still pending rather than unclaimed.
+        return { state: 'pending' };
+      }
+      const computed = window.getComputedStyle(button);
+      return {
+        state: 'ready',
+        background: computed.backgroundColor,
+        color: computed.color,
+        borderRadius: computed.borderTopLeftRadius,
+        border: computed.borderTopWidth + ' ' + computed.borderTopStyle + ' ' + computed.borderTopColor,
+        padding: computed.padding,
+        fontFamily: computed.fontFamily.split(',')[0].replace(/["']/g, ''),
+        fontSize: computed.fontSize,
+        fontWeight: computed.fontWeight,
+        textTransform: computed.textTransform
+      };
+    }
+
+    function renderStyleReport() {
+      const body = document.getElementById('styleReportBody');
+      if (!body) {
+        return;
+      }
+
+      const control = measureShadowButton('fcStyleControl');
+
+      const rows = styleTestCases.map(function (testCase) {
+        const measurement = measureShadowButton(testCase.id);
+
+        if (measurement.state !== 'ready') {
+          const note = measurement.state === 'missing'
+            ? 'Element not found on page'
+            : 'Not rendered yet (pending status request, or unclaimed mapping)';
+          return `<tr>
+            <td>${testCase.label}</td>
+            <td>${escapeHtml(testCase.mechanism)}</td>
+            <td colspan="4" class="text-muted">${note}</td>
+            <td class="text-muted">n/a</td>
+          </tr>`;
+        }
+
+        let verdict;
+        if (testCase.id === 'fcStyleControl') {
+          verdict = '<span class="text-muted">baseline</span>';
+        } else if (control.state !== 'ready') {
+          verdict = '<span class="text-muted">no baseline yet</span>';
+        } else {
+          const applied = testCase.expects.filter(function (prop) {
+            return measurement[prop] !== control[prop];
+          });
+          const ignored = testCase.expects.filter(function (prop) {
+            return measurement[prop] === control[prop];
+          });
+
+          if (applied.length === 0) {
+            verdict = '<span class="verdict-ignored">IGNORED</span>'
+              + `<div class="small text-muted">no effect on: ${ignored.join(', ')}</div>`;
+          } else if (ignored.length === 0) {
+            verdict = '<span class="verdict-applied">APPLIED</span>'
+              + `<div class="small text-muted">${applied.join(', ')}</div>`;
+          } else {
+            verdict = '<span class="verdict-partial">PARTIAL</span>'
+              + `<div class="small text-muted">applied: ${applied.join(', ')}<br>ignored: ${ignored.join(', ')}</div>`;
+          }
+        }
+
+        return `<tr>
+          <td>${testCase.label}</td>
+          <td>${escapeHtml(testCase.mechanism)}</td>
+          <td>${measurement.background}</td>
+          <td>${measurement.color}</td>
+          <td>${measurement.borderRadius}</td>
+          <td>${measurement.fontFamily} ${measurement.fontSize} / ${measurement.fontWeight}</td>
+          <td>${verdict}</td>
+        </tr>`;
+      });
+
+      body.innerHTML = rows.join('');
+
+      console.log('fc-button style override measurements:');
+      styleTestCases.forEach(function (testCase) {
+        console.log(`   ${testCase.label} (${testCase.mechanism}):`, measureShadowButton(testCase.id));
+      });
+
+      checkStyleLeak();
+    }
+
+    // The child <style> elements stay in the light DOM, so they remain live document
+    // stylesheets. A bare `button` selector therefore also matches ordinary page buttons.
+    // Probing a freshly created unstyled button keeps this independent of Bootstrap's
+    // own `.btn` rules, which would otherwise mask or fake a leak.
+    function checkStyleLeak() {
+      const verdictEl = document.getElementById('leakCanaryVerdict');
+      if (!verdictEl) {
+        return;
+      }
+
+      const probe = document.createElement('button');
+      probe.textContent = 'probe';
+      probe.style.position = 'absolute';
+      probe.style.left = '-9999px';
+      document.body.appendChild(probe);
+      const computed = window.getComputedStyle(probe);
+      const leaked = {
+        'text-transform': computed.textTransform !== 'none' ? computed.textTransform : null,
+        'min-height': parseFloat(computed.minHeight) > 0 ? computed.minHeight : null,
+        'padding': computed.padding !== '0px' ? computed.padding : null,
+        'border-radius': parseFloat(computed.borderTopLeftRadius) > 0 ? computed.borderTopLeftRadius : null,
+        'font-weight': computed.fontWeight === '700' || computed.fontWeight === '600' ? computed.fontWeight : null
+      };
+      probe.remove();
+
+      const signals = Object.keys(leaked).filter(function (prop) {
+        return leaked[prop] !== null;
+      }).map(function (prop) {
+        return `${prop}: ${leaked[prop]}`;
+      });
+
+      if (signals.length > 0) {
+        verdictEl.innerHTML = '<strong>LEAKED into the host page</strong> &mdash; a plain &lt;button&gt; picked up '
+          + signals.join('; ');
+        verdictEl.className = 'small verdict-ignored';
+        console.warn('fc-button override styles leaked into the host page:', leaked);
+      } else {
+        verdictEl.textContent = 'No leak detected - ordinary page buttons unaffected.';
+        verdictEl.className = 'small verdict-applied';
+      }
+    }
+
+    // fc-button renders only after its status request resolves, so poll until the
+    // buttons appear rather than trusting the first measurement.
+    function scheduleStyleReport() {
+      let attempts = 0;
+      const timer = setInterval(function () {
+        attempts += 1;
+        renderStyleReport();
+        const allReady = styleTestCases.every(function (testCase) {
+          return measureShadowButton(testCase.id).state === 'ready';
+        });
+        if (allReady || attempts >= 30) {
+          clearInterval(timer);
+        }
+      }, 500);
+    }
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function () {
       const scriptEl = document.getElementById('finderconnect-sdk');
@@ -1031,6 +1498,13 @@
       const clearBtn = document.getElementById('clearAttributionBtn');
       if (clearBtn) {
         clearBtn.addEventListener('click', clearAttribution);
+      }
+
+      // Style override measurement
+      scheduleStyleReport();
+      const rerunBtn = document.getElementById('rerunStyleReport');
+      if (rerunBtn) {
+        rerunBtn.addEventListener('click', renderStyleReport);
       }
 
       // Log message about testing environment
