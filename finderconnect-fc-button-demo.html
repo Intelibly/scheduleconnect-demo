@@ -66,6 +66,71 @@
       margin-bottom: 2rem;
     }
 
+    .lang-qa-box {
+      background: #f3f0ff;
+      border: 2px solid #764ba2;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .lang-switch-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .lang-switch-group .btn.active {
+      box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.35);
+    }
+
+    .lang-state {
+      background: #ffffff;
+      border: 1px solid #ded6f5;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .lang-state div+div {
+      margin-top: 0.25rem;
+    }
+
+    .lang-readout {
+      background: #2d2d2d;
+      color: #4af626;
+      font-family: 'Courier New', monospace;
+      padding: 1rem;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      word-break: break-all;
+    }
+
+    .lang-readout a {
+      color: #7fd4ff;
+    }
+
+    .lang-badge {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 12px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .lang-pass {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .lang-fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
     .widget-container {
       background: white;
       padding: 2rem;
@@ -432,6 +497,56 @@
       </div>
     </div>
 
+    <!-- Language QA -->
+    <div class="lang-qa-box">
+      <h4><i class="fa fa-language me-2"></i>Language QA &mdash; <code>data-lng</code></h4>
+      <p class="mb-3">
+        Sets <code>data-lng</code> on every <code>&lt;fc-button&gt;</code> on this page. The SDK reads the attribute at
+        click time and appends <code>lng</code> to the booking URL. The button label itself is not translated, so verify
+        the language in the captured booking URL and inside the booking modal.
+      </p>
+
+      <div class="small text-muted mb-1">
+        <strong>fc-button attribute</strong> &mdash; applied to all <code>&lt;fc-button&gt;</code> elements
+      </div>
+      <div class="lang-switch-group" id="langSwitchGroup">
+        <button type="button" class="btn btn-outline-primary" data-lang="en">en &mdash; English</button>
+        <button type="button" class="btn btn-outline-primary" data-lang="fr">fr &mdash; Fran&ccedil;ais</button>
+        <button type="button" class="btn btn-outline-primary" data-lang="es">es &mdash; Espa&ntilde;ol</button>
+        <button type="button" class="btn btn-outline-dark" data-lang="">No attribute</button>
+      </div>
+
+      <div class="small text-muted mb-1">
+        <strong>Page URL fallback</strong> &mdash; <code>?lng=</code> is only used when the attribute is missing
+      </div>
+      <div class="lang-switch-group" id="langParamGroup">
+        <button type="button" class="btn btn-sm btn-outline-primary" data-lang="en">en</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-lang="fr">fr</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-lang="es">es</button>
+        <button type="button" class="btn btn-sm btn-outline-dark" data-lang="">none</button>
+      </div>
+
+      <div class="lang-state small">
+        <div>Attribute on <span id="langButtonCount">0</span> fc-button elements:
+          <code id="langAttrState">(not set)</code>
+        </div>
+        <div>URL fallback: <code id="langParamState">(not set)</code></div>
+        <div>Expected in booking URL: <code id="langExpected">(omitted)</code></div>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="autoCloseLangModal" />
+        <label class="form-check-label small" for="autoCloseLangModal">
+          Auto-close the booking modal after capturing the URL (faster repeat checks)
+        </label>
+      </div>
+
+      <div class="small text-muted mb-1">
+        Booking URL captured from <code>sc-modal[iframe-url]</code> on the last fc-button click
+      </div>
+      <div class="lang-readout" id="langReadout">Click any fc-button below to capture its booking URL.</div>
+    </div>
+
     <!-- Testing Instructions -->
     <div class="instructions-box">
       <h5><i class="fa fa-clipboard-list me-2"></i>Testing Instructions</h5>
@@ -440,7 +555,11 @@
           Campaign")</li>
         <li><strong>Verify Capture:</strong> The banner will appear showing captured attribution parameters</li>
         <li><strong>Browse Provider/Locations:</strong> Review the provider/location listings below</li>
+        <li><strong>Pick a Language:</strong> Use the <code>data-lng</code> panel above to set the attribute to
+          <code>en</code>, <code>fr</code>, or <code>es</code></li>
         <li><strong>Book Appointment:</strong> Click the rendered fc-button on any provider/location</li>
+        <li><strong>Verify Language:</strong> Confirm the captured booking URL carries the expected <code>lng</code>
+          value and that the modal content renders in that language</li>
         <li><strong>Verify Flow:</strong> Check browser console (F12) to confirm the SDK loads and detects
           <code>fc-button</code> elements with
           <code>data-location-internal-id</code> and <code>data-provider-internal-id</code> attributes
@@ -1316,8 +1435,11 @@
 
     // Mechanism labels contain tag names, so they must be escaped before going into HTML.
     function escapeHtml(value) {
-      return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return String(value).replace(/[&<>"']/g, function (char) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
+      });
     }
+
 
     // Reads the computed style of the <button> inside an fc-button's shadow root.
     function measureShadowButton(hostId) {
@@ -1473,6 +1595,162 @@
       }, 500);
     }
 
+    // Languages accepted by the SDK; anything else is discarded.
+    const FC_SUPPORTED_LANGS = ['en', 'es', 'fr'];
+    let fcLangAttr = 'en';
+    let fcLastClick = null;
+
+    // Mirrors the SDK: lowercase, then accept only en/es/fr.
+    function normalizeLng(value) {
+      if (!value) {
+        return null;
+      }
+      const lower = String(value).toLowerCase();
+      return FC_SUPPORTED_LANGS.includes(lower) ? lower : null;
+    }
+
+    function currentLngParam() {
+      return new URLSearchParams(window.location.search).get('lng') || '';
+    }
+
+    // The attribute wins; the URL parameter is only a fallback.
+    function expectedLng() {
+      return normalizeLng(fcLangAttr) || normalizeLng(currentLngParam());
+    }
+
+    function applyLangAttribute(value) {
+      fcLangAttr = value;
+      getFcButtons().forEach(function (button) {
+        if (value) {
+          button.setAttribute('data-lng', value);
+        } else {
+          button.removeAttribute('data-lng');
+        }
+      });
+      renderLangState();
+      console.log(value
+        ? `Set data-lng="${value}" on all fc-button elements`
+        : 'Removed data-lng from all fc-button elements');
+    }
+
+    function applyLangParam(value) {
+      const url = new URL(window.location.href);
+      if (value) {
+        url.searchParams.set('lng', value);
+      } else {
+        url.searchParams.delete('lng');
+      }
+      window.history.replaceState({}, '', url.toString());
+      renderLangState();
+    }
+
+    function renderLangState() {
+      const param = currentLngParam();
+
+      document.querySelectorAll('#langSwitchGroup [data-lang]').forEach(function (button) {
+        button.classList.toggle('active', button.dataset.lang === fcLangAttr);
+      });
+      document.querySelectorAll('#langParamGroup [data-lang]').forEach(function (button) {
+        button.classList.toggle('active', button.dataset.lang === param);
+      });
+
+      const countEl = document.getElementById('langButtonCount');
+      const attrEl = document.getElementById('langAttrState');
+      const paramEl = document.getElementById('langParamState');
+      const expectedEl = document.getElementById('langExpected');
+      const expected = expectedLng();
+
+      countEl.textContent = getFcButtons().length.toString();
+
+      attrEl.textContent = fcLangAttr ? `data-lng="${fcLangAttr}"` : '(not set)';
+
+      paramEl.textContent = param ? `?lng=${param}` : '(not set)';
+      expectedEl.textContent = expected ? `lng=${expected}` : '(omitted, booking app default)';
+    }
+
+    function describeBookingUrl(rawUrl) {
+      const readout = document.getElementById('langReadout');
+      let parsed;
+
+      try {
+        parsed = new URL(rawUrl);
+      } catch (error) {
+        readout.textContent = rawUrl;
+        return;
+      }
+
+      const actual = parsed.searchParams.get('lng');
+      const expected = expectedLng();
+      const matches = (actual || null) === expected;
+      const target = fcLastClick && fcLastClick.location_internal_id
+        ? `location ${fcLastClick.location_internal_id} / provider ${fcLastClick.provider_internal_id}`
+        : 'fc-button';
+
+      readout.innerHTML = [
+        `<div><span class="lang-badge ${matches ? 'lang-pass' : 'lang-fail'}">`,
+        `${matches ? 'MATCH' : 'MISMATCH'}</span> ${escapeHtml(target)}</div>`,
+        `<div class="mt-2">expected: ${escapeHtml(expected ? 'lng=' + expected : 'lng omitted')}</div>`,
+        `<div>actual:   ${escapeHtml(actual ? 'lng=' + actual : 'lng omitted')}</div>`,
+        `<div class="mt-2">booking URL:</div>`,
+        `<div><a href="${escapeHtml(parsed.toString())}" target="_blank" rel="noopener">`,
+        `${escapeHtml(parsed.toString())}</a></div>`
+      ].join('');
+
+      console.log('fc-button booking URL captured:', parsed.toString());
+      console.log(`   expected lng: ${expected || '(omitted)'} | actual lng: ${actual || '(omitted)'}`);
+
+      if (document.getElementById('autoCloseLangModal').checked) {
+        const modal = document.querySelector('sc-modal');
+        if (modal) {
+          // Let the SDK finish opening before reverting it.
+          setTimeout(function () {
+            modal.removeAttribute('active');
+            modal.setAttribute('iframe-url', 'about:blank');
+          }, 0);
+        }
+      }
+    }
+
+    function setupLanguageQa() {
+      document.getElementById('langSwitchGroup').addEventListener('click', function (event) {
+        const button = event.target.closest('[data-lang]');
+        if (button) {
+          applyLangAttribute(button.dataset.lang);
+        }
+      });
+
+      document.getElementById('langParamGroup').addEventListener('click', function (event) {
+        const button = event.target.closest('[data-lang]');
+        if (button) {
+          applyLangParam(button.dataset.lang);
+        }
+      });
+
+      document.addEventListener('fc-button:click', function (event) {
+        fcLastClick = event.detail || null;
+      });
+
+      // The modal is created by the SDK after load, so watch the whole body for it.
+      new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+          const target = mutation.target;
+          if (!target.tagName || target.tagName.toLowerCase() !== 'sc-modal') {
+            return;
+          }
+          const url = target.getAttribute('iframe-url');
+          if (url && url !== 'about:blank') {
+            describeBookingUrl(url);
+          }
+        });
+      }).observe(document.body, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['iframe-url']
+      });
+
+      applyLangAttribute(fcLangAttr);
+    }
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function () {
       const scriptEl = document.getElementById('finderconnect-sdk');
@@ -1493,6 +1771,7 @@
       seedDemoAttributionIfEmpty();
       displayAttributionBanner();
       updateSdkStatus();
+      setupLanguageQa();
 
       // Add click handler to clear attribution button
       const clearBtn = document.getElementById('clearAttributionBtn');
